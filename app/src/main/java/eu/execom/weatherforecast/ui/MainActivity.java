@@ -1,5 +1,6 @@
 package eu.execom.weatherforecast.ui;
 
+import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
@@ -25,12 +25,9 @@ import eu.execom.weatherforecast.BuildConfig;
 import eu.execom.weatherforecast.ConverterTemperature;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
-import eu.execom.weatherforecast.SimpleDataFormater;
 import eu.execom.weatherforecast.WeatherIconProvider;
 import eu.execom.weatherforecast.domain.Coordinates;
-import eu.execom.weatherforecast.domain.Currently;
 import eu.execom.weatherforecast.domain.DailyWeather;
-import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.ui.adapter.generic.DailyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -114,9 +111,24 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.clear();
     }
 
-    public void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
-        ActivityCompat.requestPermissions(this, new String[]{ACCESS_COARSE_LOCATION}, 1);
+    private void requestPermission() {
+
+        String fineLocationPermission = "android.permission.ACCESS_FINE_LOCATION";
+        String coarseLocationPermission = "android.permission.ACCESS_COARSE_LOCATION";
+        int checkValueFineLocationPermission = this.checkCallingOrSelfPermission(fineLocationPermission);
+        int checkValueCoarseLocationPermission = this.checkCallingOrSelfPermission(coarseLocationPermission);
+
+        if(checkValueFineLocationPermission==PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
+        }else{
+            Toast.makeText(myApplication, "Permission denied.", Toast.LENGTH_SHORT).show();
+        }
+
+        if(checkValueCoarseLocationPermission==PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{ACCESS_COARSE_LOCATION}, 1);
+        }else{
+            Toast.makeText(myApplication, "Permission denied.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setBackground() {
