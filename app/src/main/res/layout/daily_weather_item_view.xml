@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/textViewDay"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:text="@string/day"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="355dp" />
+
+    <ImageView
+        android:id="@+id/imageViewWeather"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/textViewDay"
+        tools:ignore="ContentDescription" />
+
+</merge>
