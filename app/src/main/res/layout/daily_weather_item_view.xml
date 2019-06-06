@@ -18,6 +18,6 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_below="@+id/textViewDay"
-        android:contentDescription="@string/weatherItemView" />
+        tools:ignore="ContentDescription" />
 
 </merge>

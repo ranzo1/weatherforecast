@@ -56,8 +56,7 @@
         android:layout_below="@+id/textViewDescription"
         android:layout_centerInParent="true"
         android:layout_marginTop="5dp"
-        android:background="@drawable/ic_location"
-        android:contentDescription="View visualy represents location" />
+        android:background="@drawable/ic_location" />
 
     <ImageView
         android:id="@+id/imageViewWeather"
@@ -65,8 +64,7 @@
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="50dp"
-        android:contentDescription="View visualy represents current weather" />
+        android:layout_marginTop="50dp" />
 
     <ImageView
         android:id="@+id/imageViewTemperature"
@@ -75,8 +73,7 @@
         android:layout_below="@id/imageViewWeather"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/textViewTemperature"
-        android:background="@drawable/ic_thermometer"
-        android:contentDescription="View visually represents temperature" />
+        android:background="@drawable/ic_thermometer" />
 
     <TextView
         android:id="@+id/textViewDescription"

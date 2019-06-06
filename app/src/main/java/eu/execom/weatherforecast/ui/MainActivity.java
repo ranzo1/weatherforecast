@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private CompositeDisposable compositeDisposable;
-    private final double CITY_NAME_LATITUDE  = 45.267136;
-    private final double CITY_NAME_LONGITUDE = 19.833549;
+    private final double CITY_NOVI_SAD_LATITUDE  = 45.267136;
+    private final double CITY_NOVI_SAD_LONGITUDE = 19.833549;
 
     @Bean
     WeatherIconProvider weatherIconProvider;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         recyclerWeather.setAdapter(dailyDataAdapter);
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation(new Coordinates(CITY_NAME_LONGITUDE, CITY_NAME_LATITUDE))
+        compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation(new Coordinates(CITY_NOVI_SAD_LONGITUDE, CITY_NOVI_SAD_LATITUDE))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dailyWeathers -> {
                     dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
