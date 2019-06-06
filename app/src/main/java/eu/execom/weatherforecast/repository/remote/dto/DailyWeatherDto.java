@@ -2,9 +2,9 @@ package eu.execom.weatherforecast.repository.remote.dto;
 
 public class DailyWeatherDto {
 
-  String timezone;
-  CurrentlyDto currently;
-  DailyDto daily;
+  private String timezone;
+  private CurrentlyDto currently;
+  private DailyDto daily;
 
   public String getTimezone() {
     return timezone;

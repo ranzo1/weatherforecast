@@ -25,6 +25,4 @@ public class DailyDataAdapter extends RecyclerViewAdapterBase<DailyData, DailyDa
     protected DailyDataItemView onCreateItemView(ViewGroup parent, int viewType) {
         return DailyDataItemView_.build(context);
     }
-
-
 }

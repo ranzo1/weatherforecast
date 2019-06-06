@@ -4,7 +4,8 @@ import java.util.List;
 
 public class Daily {
 
-    String summary,icon;
+    private String summary;
+    private WeatherType icon;
     List<DailyData> data;
 
     public String getSummary() {
@@ -15,11 +16,11 @@ public class Daily {
         this.summary = summary;
     }
 
-    public String getIcon() {
+    public WeatherType getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(WeatherType icon) {
         this.icon = icon;
     }
 

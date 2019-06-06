@@ -5,7 +5,5 @@ import io.reactivex.Single;
 
 public interface WeatherRemoteDao {
 
-    Single<DailyWeather> getForecast(double lat, double lon);
-
-
+    Single<DailyWeather> getForecast(double latitude, double longitude);
 }

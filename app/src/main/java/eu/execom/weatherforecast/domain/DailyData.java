@@ -4,10 +4,13 @@ import java.util.Date;
 
 public class DailyData {
 
-    int temperatureMinTime,temperatureMaxTime;
-    String summary,icon;
-    float temperatureMin,temperatureMax;
-    Date time;
+    private int temperatureMinTime;
+    private int temperatureMaxTime;
+    private String summary;
+    private WeatherType icon;
+    private float temperatureMin;
+    private float temperatureMax;
+    private Date time;
 
     public int getTemperatureMinTime() {
         return temperatureMinTime;
@@ -33,11 +36,11 @@ public class DailyData {
         this.summary = summary;
     }
 
-    public String getIcon() {
+    public WeatherType getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(WeatherType icon) {
         this.icon = icon;
     }
 

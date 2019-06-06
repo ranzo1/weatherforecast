@@ -2,9 +2,9 @@ package eu.execom.weatherforecast.domain;
 
 public class DailyWeather {
 
-    String timezone;
-    Currently currently;
-    Daily daily;
+    private String timezone;
+    private Currently currently;
+    private Daily daily;
 
     public String getTimezone() {
         return timezone;

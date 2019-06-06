@@ -4,8 +4,10 @@ import java.util.List;
 
 public class DailyDto {
 
-  String summary,icon;
-  List<DailyDataDto> data;
+    private String summary;
+    private String icon;
+
+    private List<DailyDataDto> data;
 
     public String getSummary() {
         return summary;

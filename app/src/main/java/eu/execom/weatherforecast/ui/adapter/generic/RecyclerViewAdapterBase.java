@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class RecyclerViewAdapterBase <T, V extends View> extends RecyclerView.Adapter<ViewWrapper<V>> {
+public abstract class RecyclerViewAdapterBase<T, V extends View> extends RecyclerView.Adapter<ViewWrapper<V>> {
 
     protected List<T> items = new ArrayList<>();
 
     @Override
     public ViewWrapper<V> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewWrapper<>(onCreateItemView(parent,viewType));
+        return new ViewWrapper<>(onCreateItemView(parent, viewType));
     }
 
     @Override

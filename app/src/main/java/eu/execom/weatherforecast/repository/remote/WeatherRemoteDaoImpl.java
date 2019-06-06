@@ -1,6 +1,10 @@
 package eu.execom.weatherforecast.repository.remote;
 
+import android.util.Log;
+
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 
 import java.util.Date;
 
@@ -8,6 +12,7 @@ import eu.execom.weatherforecast.domain.Currently;
 import eu.execom.weatherforecast.domain.Daily;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
+import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.repository.remote.dto.CurrentlyDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDataDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDto;
@@ -17,10 +22,9 @@ import io.reactivex.Single;
 public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
 
     private final HttpClient httpClient;
-
     private final ModelMapper modelMapper;
 
-    public WeatherRemoteDaoImpl(HttpClient httpClient, ModelMapper modelMapper){
+    public WeatherRemoteDaoImpl(HttpClient httpClient, ModelMapper modelMapper) {
         this.httpClient = httpClient;
         this.modelMapper = modelMapper;
         setupMapper();
@@ -35,16 +39,42 @@ public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
 
         modelMapper.createTypeMap(Long.class, Date.class)
                 .setConverter(input -> new Date(input.getSource()));
-    }
 
+        modelMapper.createTypeMap(String.class, WeatherType.class)
+                .setConverter(new Converter<String, WeatherType>() {
+                    @Override
+                    public WeatherType convert(MappingContext<String, WeatherType> context) {
+                        switch (context.getSource()) {
+                            case "clear-day":
+                                return WeatherType.CLEAR_DAY;
+                            case "clear-night":
+                                return WeatherType.CLEAR_NIGHT;
+                            case "rain":
+                                return WeatherType.RAIN;
+                            case "snow":
+                                return WeatherType.SNOW;
+                            case "sleet":
+                                return WeatherType.SLEET;
+                            case "wind":
+                                return WeatherType.WIND;
+                            case "fog":
+                                return WeatherType.FOG;
+                            case "cloudy":
+                                return WeatherType.CLOUDY;
+                            case "partly-cloudy-day":
+                                return WeatherType.PARTLY_CLOUDY_DAY;
+                            case "partly-cloudy-night":
+                                return WeatherType.PARTLY_CLOUDY_NIGHT;
+                        }
+
+                        throw new IllegalArgumentException("Unsupported weather type: " + context.getSource());
+                    }
+                });
+    }
 
     @Override
-    public Single<DailyWeather> getForecast(double lat, double lon) {
-        return httpClient.getWeather(lat,lon)
+    public Single<DailyWeather> getForecast(double latitude, double longitude) {
+        return httpClient.getWeather(latitude, longitude)
                 .map(dailyWeatherDto -> modelMapper.map(dailyWeatherDto, DailyWeather.class));
     }
-
-
-
-
 }

@@ -2,10 +2,13 @@ package eu.execom.weatherforecast.repository.remote.dto;
 
 public class DailyDataDto {
 
-    int temperatureMinTime,temperatureMaxTime;
-    String summary,icon;
-    float temperatureMin,temperatureMax;
-    long time;
+    private int temperatureMinTime;
+    private int temperatureMaxTime;
+    private String summary;
+    private String icon;
+    private float temperatureMin;
+    private float temperatureMax;
+    private long time;
 
     public int getTemperatureMinTime() {
         return temperatureMinTime;
