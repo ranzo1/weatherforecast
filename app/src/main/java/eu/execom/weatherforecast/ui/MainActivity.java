@@ -1,6 +1,5 @@
 package eu.execom.weatherforecast.ui;
 
-import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,14 +25,10 @@ import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.WeatherIconProvider;
 import eu.execom.weatherforecast.domain.Coordinates;
-import eu.execom.weatherforecast.domain.DailyWeather;
 import eu.execom.weatherforecast.ui.adapter.generic.DailyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
-import io.nlopez.smartlocation.OnLocationUpdatedListener;
-import io.nlopez.smartlocation.SmartLocation;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
