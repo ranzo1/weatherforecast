@@ -5,5 +5,5 @@ import io.reactivex.Single;
 
 public interface HttpClient {
 
-    Single<DailyWeatherDto> getWeather(double lat, double lon);
+    Single<DailyWeatherDto> getWeather(double latitude, double longitude);
 }

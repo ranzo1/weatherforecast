@@ -1,46 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/backgroundWeatherLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.MainActivity">
-
 
     <TextView
         android:id="@+id/textViewCity"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@+id/imageViewLocation"
-        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:text="@string/city"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:text="City" />
-
-
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewTemperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@+id/imageViewWeather"
+        android:layout_centerInParent="true"
         android:layout_marginTop="5dp"
-        android:textSize="40sp"
+        android:text="@string/temperature"
         android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:text="Temperature" />
+        android:textSize="40sp"
+        android:textStyle="bold" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardViewDaily"
         android:layout_width="match_parent"
         android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
-        android:layout_alignParentBottom="true"
         app:cardBackgroundColor="#A1FFFFFF"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
@@ -51,47 +47,44 @@
             android:id="@+id/recyclerWeather"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
     <ImageView
         android:id="@+id/imageViewLocation"
         android:layout_width="15dp"
         android:layout_height="15dp"
+        android:layout_below="@+id/textViewDescription"
+        android:layout_centerInParent="true"
         android:layout_marginTop="5dp"
         android:background="@drawable/ic_location"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/textViewDescription"
-
-         />
+        android:contentDescription="View visualy represents location" />
 
     <ImageView
         android:id="@+id/imageViewWeather"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        />
+        android:layout_marginTop="50dp"
+        android:contentDescription="View visualy represents current weather" />
 
     <ImageView
         android:id="@+id/imageViewTemperature"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/ic_thermometer"
-        android:layout_toEndOf="@id/textViewTemperature"
         android:layout_below="@id/imageViewWeather"
-         />
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/textViewTemperature"
+        android:background="@drawable/ic_thermometer"
+        android:contentDescription="View visually represents temperature" />
 
     <TextView
         android:id="@+id/textViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewTemperature"
-        android:textColor="@color/colorPrimary"
         android:layout_centerInParent="true"
-        android:text="Description" />
-
+        android:text="@string/description"
+        android:textColor="@color/colorPrimary" />
 
 </RelativeLayout>

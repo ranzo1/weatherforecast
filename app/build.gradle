@@ -38,6 +38,7 @@ def ModelMapperVersion = "0.7.5"
 def LoggingInterceptor = "3.14.2"
 def CardViewVersion = "28.0.0"
 def RecyclerViewVersion = "28.0.0"
+def SmartLocation = "3.3.3"
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:$AppCompatVersion"
@@ -73,5 +74,8 @@ dependencies {
 
     //okhttp3
     implementation("com.squareup.okhttp3:logging-interceptor:$LoggingInterceptor")
+
+    //smartLocation
+    implementation "io.nlopez.smartlocation:library:$SmartLocation"
 
 }

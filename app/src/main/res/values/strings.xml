@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WeatherForecast</string>
     <string name="api_key" translatable="false">a2432e48034ec0dd6fa038881e6bd1b1</string>
+    <string name="city">City</string>
+    <string name="temperature">Temperature</string>
+    <string name="description">Description</string>
+    <string name="day">Day</string>
+    <string name="weatherItemView">View visually represents weather of week days</string>
 </resources>

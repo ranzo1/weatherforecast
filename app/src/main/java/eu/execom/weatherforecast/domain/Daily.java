@@ -6,7 +6,7 @@ public class Daily {
 
     private String summary;
     private WeatherType icon;
-    List<DailyData> data;
+    private List<DailyData> data;
 
     public String getSummary() {
         return summary;
