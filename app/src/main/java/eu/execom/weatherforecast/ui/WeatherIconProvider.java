@@ -1,7 +1,8 @@
-package eu.execom.weatherforecast;
+package eu.execom.weatherforecast.ui;
 
 import org.androidannotations.annotations.EBean;
 
+import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.WeatherType;
 
 @EBean

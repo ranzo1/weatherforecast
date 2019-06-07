@@ -11,8 +11,8 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import eu.execom.weatherforecast.R;
-import eu.execom.weatherforecast.SimpleDataFormater;
-import eu.execom.weatherforecast.WeatherIconProvider;
+import eu.execom.weatherforecast.ui.SimpleDataFormater;
+import eu.execom.weatherforecast.ui.WeatherIconProvider;
 import eu.execom.weatherforecast.domain.DailyData;
 
 @EViewGroup(R.layout.daily_weather_item_view)

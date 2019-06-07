@@ -1,5 +1,9 @@
 package eu.execom.weatherforecast.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,8 +27,7 @@ import eu.execom.weatherforecast.BuildConfig;
 import eu.execom.weatherforecast.ConverterTemperature;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
-import eu.execom.weatherforecast.WeatherIconProvider;
-import eu.execom.weatherforecast.domain.Coordinates;
+import eu.execom.weatherforecast.domain.DailyWeather;
 import eu.execom.weatherforecast.ui.adapter.generic.DailyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private CompositeDisposable compositeDisposable;
-    private final double CITY_NOVI_SAD_LATITUDE  = 45.267136;
-    private final double CITY_NOVI_SAD_LONGITUDE = 19.833549;
+    private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 1;
 
     @Bean
     WeatherIconProvider weatherIconProvider;
@@ -69,24 +71,10 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
-
         recyclerWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         recyclerWeather.setAdapter(dailyDataAdapter);
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation(new Coordinates(CITY_NOVI_SAD_LONGITUDE, CITY_NOVI_SAD_LATITUDE))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dailyWeathers -> {
-                    dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
-                    setBackground();
-                    imageViewWeather.setImageResource(weatherIconProvider.getWeatherIcon(dailyWeathers.getCurrently().getIcon()));
-                    textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
-                    textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
-                }, throwable -> {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG, throwable.getMessage());
-                    }
-                    Toast.makeText(myApplication, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                }));
+        permissionsCheck();
     }
 
     @Override
@@ -97,5 +85,51 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBackground() {
         backgroundWeatherLayout.setBackgroundResource(R.drawable.night);
+    }
+
+    private void fetchWeatherData(DailyWeather dailyWeathers) {
+        imageViewWeather.setImageResource(weatherIconProvider.getWeatherIcon(dailyWeathers.getCurrently().getIcon()));
+        textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
+        textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
+    }
+
+    private void errorHandle(Throwable throwable) {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, throwable.getMessage());
+        }
+        Toast.makeText(myApplication, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void permissionsCheck() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
+        } else {
+            showingResultOnRecycleView();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case ACCESS_FINE_LOCATION_PERMISSION_REQUEST: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showingResultOnRecycleView();
+                } else {
+                    Toast.makeText(myApplication, "Permission denied :(", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private void showingResultOnRecycleView() {
+        compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(dailyWeathers -> {
+                    dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
+                    setBackground();
+                    fetchWeatherData(dailyWeathers);
+                }, this::errorHandle));
     }
 }
