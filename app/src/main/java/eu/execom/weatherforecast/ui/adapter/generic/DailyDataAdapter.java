@@ -8,7 +8,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import eu.execom.weatherforecast.domain.DailyData;
-import eu.execom.weatherforecast.domain.DailyWeather;
 
 @EBean
 public class DailyDataAdapter extends RecyclerViewAdapterBase<DailyData, DailyDataItemView> {

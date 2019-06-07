@@ -6,6 +6,7 @@ import android.app.Application;
 import org.androidannotations.annotations.EApplication;
 
 import eu.execom.weatherforecast.repository.remote.RemoteRepositoryModule;
+import eu.execom.weatherforecast.system.SystemModule;
 import eu.execom.weatherforecast.usecase.UseCaseModule;
 
 @SuppressLint("Registered")
@@ -25,6 +26,7 @@ public class MyApplication extends Application {
                 .builder()
                 .remoteRepositoryModule(new RemoteRepositoryModule(this))
                 .useCaseModule(new UseCaseModule())
+                .systemModule(new SystemModule(this))
                 .build();
     }
 
