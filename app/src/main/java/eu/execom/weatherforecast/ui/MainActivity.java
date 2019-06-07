@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
     }
 
-    private void HandleError(Throwable throwable) {
+    private void handleError(Throwable throwable) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, throwable.getMessage());
         }
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
         } else {
-            showWeeklyWeatherForecast();
+            fetchWeeklyWeatherForecast();
         }
     }
 
@@ -114,20 +114,20 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == ACCESS_FINE_LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showWeeklyWeatherForecast();
+                fetchWeeklyWeatherForecast();
             } else {
                 Toast.makeText(myApplication, "Permission denied :(", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    private void showWeeklyWeatherForecast() {
+    private void fetchWeeklyWeatherForecast() {
         compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dailyWeathers -> {
                     dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
                     setBackground();
                     showWeatherData(dailyWeathers);
-                }, this::HandleError));
+                }, this::handleError));
     }
 }
