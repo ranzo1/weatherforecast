@@ -14,8 +14,10 @@ import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.repository.remote.dto.CurrentlyDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDataDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDto;
+import eu.execom.weatherforecast.repository.remote.dto.DailyWeatherDto;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
 
@@ -70,9 +72,6 @@ public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
     @Override
     public Single<DailyWeather> getForecast(double latitude, double longitude) {
         return httpClient.getWeather(latitude, longitude)
-                .map(dailyWeatherDto -> {
-                    Log.d("test", "getFirecast in remote dao " + Thread.currentThread().getName());
-                    return modelMapper.map(dailyWeatherDto, DailyWeather.class);
-                });
+                .map(dailyWeatherDto -> modelMapper.map(dailyWeatherDto, DailyWeather.class));
     }
 }

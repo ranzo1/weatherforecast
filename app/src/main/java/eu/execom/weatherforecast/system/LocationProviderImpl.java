@@ -1,7 +1,6 @@
 package eu.execom.weatherforecast.system;
 
 import android.content.Context;
-import android.util.Log;
 
 import eu.execom.weatherforecast.domain.Coordinates;
 import io.nlopez.smartlocation.SmartLocation;
@@ -18,9 +17,6 @@ public class LocationProviderImpl implements LocationProvider {
     @Override
     public Single<Coordinates> getCurrentLocation() {
         return Single.create(emitter -> SmartLocation.with(context).location()
-                .start(location -> {
-                    Log.d("test", "onLocationUpdated " + Thread.currentThread().getName());
-                    emitter.onSuccess(new Coordinates(location.getLongitude(),location.getLatitude()));
-                }));
+                .start(location -> emitter.onSuccess(new Coordinates(location.getLongitude(), location.getLatitude()))));
     }
 }

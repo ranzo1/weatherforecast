@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         recyclerWeather.setAdapter(dailyDataAdapter);
         compositeDisposable = new CompositeDisposable();
-        permissionsCheck();
+        checkPermissions();
     }
 
     @Override
@@ -87,49 +87,47 @@ public class MainActivity extends AppCompatActivity {
         backgroundWeatherLayout.setBackgroundResource(R.drawable.night);
     }
 
-    private void fetchWeatherData(DailyWeather dailyWeathers) {
+    private void showWeatherData(DailyWeather dailyWeathers) {
         imageViewWeather.setImageResource(weatherIconProvider.getWeatherIcon(dailyWeathers.getCurrently().getIcon()));
         textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
     }
 
-    private void errorHandle(Throwable throwable) {
+    private void HandleError(Throwable throwable) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, throwable.getMessage());
         }
         Toast.makeText(myApplication, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-    private void permissionsCheck() {
+    private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
         } else {
-            showingResultOnRecycleView();
+            showWeeklyWeatherForecast();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case ACCESS_FINE_LOCATION_PERMISSION_REQUEST: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showingResultOnRecycleView();
-                } else {
-                    Toast.makeText(myApplication, "Permission denied :(", Toast.LENGTH_LONG).show();
-                }
+        if (requestCode == ACCESS_FINE_LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showWeeklyWeatherForecast();
+            } else {
+                Toast.makeText(myApplication, "Permission denied :(", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    private void showingResultOnRecycleView() {
+    private void showWeeklyWeatherForecast() {
         compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dailyWeathers -> {
                     dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
                     setBackground();
-                    fetchWeatherData(dailyWeathers);
-                }, this::errorHandle));
+                    showWeatherData(dailyWeathers);
+                }, this::HandleError));
     }
 }

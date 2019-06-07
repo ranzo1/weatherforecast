@@ -8,10 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @EBean
-public class SimpleDataFormater {
+public class DateFormatter {
 
     @SuppressLint("SimpleDateFormat")
-    public String dateFormatToDay(Date date) {
+    public String toDay(Date date) {
 
         return new SimpleDateFormat("E").format(date);
     }
