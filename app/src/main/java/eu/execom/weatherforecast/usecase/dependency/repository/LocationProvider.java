@@ -1,4 +1,4 @@
-package eu.execom.weatherforecast.system;
+package eu.execom.weatherforecast.usecase.dependency.repository;
 
 import android.location.Location;
 
@@ -7,7 +7,7 @@ import io.reactivex.Single;
 
 public interface LocationProvider {
 
-    Single<Location> getCurrentLocation();
+    Single<Coordinates> getCurrentLocation();
     Single<Coordinates> getLocationByCityName(String name);
-    Single<String> getNameOfCurrentLocation(Location location);
+    Single<String> getNameOfLocation(Coordinates coordinates);
 }

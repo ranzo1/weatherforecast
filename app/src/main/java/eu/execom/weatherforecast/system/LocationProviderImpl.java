@@ -3,12 +3,16 @@ package eu.execom.weatherforecast.system;
 import android.content.Context;
 import android.location.Location;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import eu.execom.weatherforecast.domain.Coordinates;
+import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
+import io.nlopez.smartlocation.OnGeocodingListener;
 import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.geocoding.utils.LocationAddress;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
 public class LocationProviderImpl implements LocationProvider {
 
@@ -19,25 +23,24 @@ public class LocationProviderImpl implements LocationProvider {
     }
 
     @Override
-    public Single<Location> getCurrentLocation() {
+    public Single<Coordinates> getCurrentLocation() {
         return Single.create(emitter -> SmartLocation.with(context).location()
-                .start(emitter::onSuccess));
+                .start(location -> {
+                    Coordinates coordinates = new Coordinates(location.getLongitude(),location.getLatitude());
+                    emitter.onSuccess(coordinates);
+                }));
     }
 
     @Override
     public Single<Coordinates> getLocationByCityName(String name) {
-
         return Single.create(emitter -> {
             Coordinates coordinatesByName = new Coordinates();
-            final List<Coordinates> coordinatesByNameList = new ArrayList<>();
-            coordinatesByNameList.add(coordinatesByName);
             SmartLocation.with(context).geocoding()
-                    .direct(name, (name1, results) -> {
-
+                    .direct(name, (cityName, results) -> {
                         if (results.size() > 0) {
                             Location location = results.get(0).getLocation();
-                            coordinatesByNameList.get(0).setLongitude(location.getLongitude());
-                            coordinatesByNameList.get(0).setLatitude(location.getLatitude());
+                            coordinatesByName.setLongitude(location.getLongitude());
+                            coordinatesByName.setLatitude(location.getLatitude());
                         }
                         emitter.onSuccess(coordinatesByName);
                     });
@@ -45,7 +48,10 @@ public class LocationProviderImpl implements LocationProvider {
     }
 
     @Override
-    public Single<String> getNameOfCurrentLocation(Location currentLocation) {
+    public Single<String> getNameOfLocation(Coordinates currentCoordinates) {
+        Location currentLocation = new Location("");
+        currentLocation.setLatitude(currentCoordinates.getLatitude());
+        currentLocation.setLongitude(currentCoordinates.getLongitude());
         return Single.create(emitter -> SmartLocation.with(context).geocoding()
                 .reverse(currentLocation, (location, list) -> emitter.onSuccess(list.get(0).getLocality())));
     }

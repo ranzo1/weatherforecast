@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout backgroundWeatherLayout;
     @ViewById
     ImageView imageViewWeather;
-    @ViewById
-    ImageView imageViewLocation;
 
     @AfterViews
     void init() {
@@ -82,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable = new CompositeDisposable();
         checkPermissions();
 
-        textViewCity.setOnClickListener(v -> new LovelyTextInputDialog(v.getContext(), R.color.colorPrimaryDark)
+        textViewCity.setOnClickListener(view -> new LovelyTextInputDialog(view.getContext(), R.color.colorPrimaryDark)
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle(R.string.text_location_dialog_title)
                 .setIcon(R.drawable.ic_location)
-                .setConfirmButton(android.R.string.ok, MainActivity.this::fetchWeeklyWeatherForecast)
+                .setConfirmButton(android.R.string.ok, this::fetchWeeklyWeatherForecast)
                 .show());
     }
 
@@ -97,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBackground() {
-
-        backgroundWeatherLayout.setBackgroundResource(R.drawable.party_cloudy_day_background);
+        backgroundWeatherLayout.setBackgroundResource(R.drawable.clear_day_background);
     }
 
     private void showWeatherData(DailyWeather dailyWeathers) {
@@ -106,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
         textViewCity.setText(dailyWeathers.getLocationData().getCityName());
+        dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
+        setBackground();
+
     }
 
     private void handleError(Throwable throwable) {
@@ -137,24 +136,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchWeeklyWeatherForecastForCurrentLocation() {
-
         compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dailyWeathers -> {
-                    dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
-                    MainActivity.this.setBackground();
-                    MainActivity.this.showWeatherData(dailyWeathers);
-
-                }, this::handleError));
+                .subscribe(this::showWeatherData, this::handleError));
     }
 
     private void fetchWeeklyWeatherForecast(String cityName) {
         compositeDisposable.add(weatherUseCase.getWeatherForecast(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dailyWeathers -> {
-                    dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
-                    setBackground();
-                    showWeatherData(dailyWeathers);
-                }, this::handleError));
+                .subscribe(this::showWeatherData, this::handleError));
     }
 }

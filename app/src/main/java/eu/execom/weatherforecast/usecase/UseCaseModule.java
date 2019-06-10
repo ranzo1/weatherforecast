@@ -4,7 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import eu.execom.weatherforecast.system.LocationProvider;
+import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
 
 @Module
