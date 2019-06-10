@@ -5,6 +5,7 @@ public class DailyWeather {
     private String timezone;
     private Currently currently;
     private Daily daily;
+    private LocationData locationData;
 
     public String getTimezone() {
         return timezone;
@@ -28,6 +29,14 @@ public class DailyWeather {
 
     public void setDaily(Daily daily) {
         this.daily = daily;
+    }
+
+    public LocationData getLocationData() {
+        return locationData;
+    }
+
+    public void setLocationData(LocationData locationData) {
+        this.locationData = locationData;
     }
 }
 

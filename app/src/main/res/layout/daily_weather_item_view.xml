@@ -6,7 +6,7 @@
         android:id="@+id/textViewDay"
         android:layout_width="wrap_content"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorBlack"
         android:layout_margin="5dp"
         android:layout_height="wrap_content"
         android:text="@string/day"
