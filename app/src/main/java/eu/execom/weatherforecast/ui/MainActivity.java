@@ -2,6 +2,7 @@ package eu.execom.weatherforecast.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 1;
 
     @Bean
-    WeatherIconProvider weatherIconProvider;
+    WeatherDrawableProvider weatherDrawableProvider;
     @Bean
     ConverterTemperature converterTemperature;
     @App
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     TextView textViewTemperature;
     @ViewById
-    TextView textViewCity;
+    TextView chooseCity;
     @ViewById
     TextView textViewDescription;
     @ViewById
@@ -77,20 +81,29 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions();
     }
 
+    @Click
+    void chooseCity() {
+        new LovelyTextInputDialog(chooseCity.getContext(), R.color.colorPrimaryDark)
+                .setTopColorRes(R.color.colorPrimary)
+                .setTitle(R.string.text_location_dialog_title)
+                .setIcon(R.drawable.ic_location)
+                .setConfirmButton(android.R.string.ok, MainActivity.this::fetchWeeklyWeatherForecast)
+                .show();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear();
     }
 
-    private void setBackground() {
-        backgroundWeatherLayout.setBackgroundResource(R.drawable.night);
-    }
-
     private void showWeatherData(DailyWeather dailyWeathers) {
-        imageViewWeather.setImageResource(weatherIconProvider.getWeatherIcon(dailyWeathers.getCurrently().getIcon()));
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
         textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
+        chooseCity.setText(dailyWeathers.getLocationData().getCityName());
+        dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
+        backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
     }
 
     private void handleError(Throwable throwable) {
@@ -106,28 +119,30 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
         } else {
-            fetchWeeklyWeatherForecast();
+            fetchWeeklyWeatherForecastForCurrentLocation();
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == ACCESS_FINE_LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                fetchWeeklyWeatherForecast();
+                fetchWeeklyWeatherForecastForCurrentLocation();
             } else {
                 Toast.makeText(myApplication, "Permission denied :(", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    private void fetchWeeklyWeatherForecast() {
+    private void fetchWeeklyWeatherForecastForCurrentLocation() {
         compositeDisposable.add(weatherUseCase.getWeatherForecastForCurrentLocation()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dailyWeathers -> {
-                    dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
-                    setBackground();
-                    showWeatherData(dailyWeathers);
-                }, this::handleError));
+                .subscribe(this::showWeatherData, this::handleError));
+    }
+
+    private void fetchWeeklyWeatherForecast(String cityName) {
+        compositeDisposable.add(weatherUseCase.getWeatherForecast(cityName)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::showWeatherData, this::handleError));
     }
 }

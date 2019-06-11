@@ -10,5 +10,8 @@ public enum WeatherType {
     FOG,
     CLOUDY,
     PARTLY_CLOUDY_DAY,
-    PARTLY_CLOUDY_NIGHT
+    PARTLY_CLOUDY_NIGHT,
+    HAIL,
+    THUNDERSTORM,
+    TORNADO
 }

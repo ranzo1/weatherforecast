@@ -12,7 +12,7 @@ import org.androidannotations.annotations.ViewById;
 
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.ui.DateFormatter;
-import eu.execom.weatherforecast.ui.WeatherIconProvider;
+import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
 import eu.execom.weatherforecast.domain.DailyData;
 
 @EViewGroup(R.layout.daily_weather_item_view)
@@ -21,7 +21,7 @@ public class DailyDataItemView extends RelativeLayout {
     @Bean
     DateFormatter dateFormatter;
     @Bean
-    WeatherIconProvider weatherIconProvider;
+    WeatherDrawableProvider weatherDrawableProvider;
     @ViewById
     TextView textViewDay;
     @ViewById
@@ -36,7 +36,7 @@ public class DailyDataItemView extends RelativeLayout {
     }
 
     public void bind(DailyData dailyData) {
-        imageViewWeather.setImageResource(weatherIconProvider.getWeatherIcon(dailyData.getIcon()));
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyData.getIcon()));
         textViewDay.setText(dateFormatter.toDay(dailyData.getTime()));
     }
 }

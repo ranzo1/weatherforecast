@@ -1,7 +1,5 @@
 package eu.execom.weatherforecast.repository.remote;
 
-import android.util.Log;
-
 import org.modelmapper.ModelMapper;
 
 import java.util.Date;
@@ -14,10 +12,8 @@ import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.repository.remote.dto.CurrentlyDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDataDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDto;
-import eu.execom.weatherforecast.repository.remote.dto.DailyWeatherDto;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
 import io.reactivex.Single;
-import io.reactivex.functions.Function;
 
 public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
 
