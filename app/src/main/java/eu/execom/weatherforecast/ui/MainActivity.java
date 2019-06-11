@@ -32,7 +32,6 @@ import eu.execom.weatherforecast.ConverterTemperature;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.DailyWeather;
-import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.ui.adapter.generic.DailyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     TextView textViewTemperature;
     @ViewById
-    TextView textViewCity;
+    TextView chooseCity;
     @ViewById
     TextView textViewDescription;
     @ViewById
@@ -83,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Click
-    void textViewCity(){
-        new LovelyTextInputDialog(textViewCity.getContext(), R.color.colorPrimaryDark)
+    void chooseCity() {
+        new LovelyTextInputDialog(chooseCity.getContext(), R.color.colorPrimaryDark)
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle(R.string.text_location_dialog_title)
                 .setIcon(R.drawable.ic_location)
@@ -98,17 +97,13 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.clear();
     }
 
-    private void setBackground(WeatherType weatherType) {
-        backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(weatherType));
-    }
-
     private void showWeatherData(DailyWeather dailyWeathers) {
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
         textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
-        textViewCity.setText(dailyWeathers.getLocationData().getCityName());
+        chooseCity.setText(dailyWeathers.getLocationData().getCityName());
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
-        setBackground(dailyWeathers.getCurrently().getIcon());
+        backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
     }
 
     private void handleError(Throwable throwable) {

@@ -27,20 +27,18 @@ public class LocationProviderImpl implements LocationProvider {
 
     @Override
     public Single<Coordinates> getLocationByCityName(String name) {
-        return Single.create(emitter -> {
-            Coordinates coordinatesByName = new Coordinates();
-            SmartLocation.with(context).geocoding()
-                    .direct(name, (cityName, results) -> {
-                        if (results.size() > 0) {
-                            Location location = results.get(0).getLocation();
-                            coordinatesByName.setLongitude(location.getLongitude());
-                            coordinatesByName.setLatitude(location.getLatitude());
-                            emitter.onSuccess(coordinatesByName);
-                        } else {
-                            emitter.onError(new Throwable("Wrong name of location!"));
-                        }
-                    });
-        });
+        return Single.create(emitter -> SmartLocation.with(context).geocoding()
+                .direct(name, (cityName, results) -> {
+                    if (results.size() > 0) {
+                        Location location = results.get(0).getLocation();
+                        Coordinates coordinatesByName = new Coordinates();
+                        coordinatesByName.setLongitude(location.getLongitude());
+                        coordinatesByName.setLatitude(location.getLatitude());
+                        emitter.onSuccess(coordinatesByName);
+                    } else {
+                        emitter.onError(new Throwable("Location " + name + " is not found."));
+                    }
+                }));
     }
 
     @Override
