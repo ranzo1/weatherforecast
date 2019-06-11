@@ -21,6 +21,7 @@ import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -31,6 +32,7 @@ import eu.execom.weatherforecast.ConverterTemperature;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.DailyWeather;
+import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.ui.adapter.generic.DailyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 1;
 
     @Bean
-    WeatherIconProvider weatherIconProvider;
+    WeatherDrawableProvider weatherDrawableProvider;
     @Bean
     ConverterTemperature converterTemperature;
     @App
@@ -78,13 +80,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerWeather.setAdapter(dailyDataAdapter);
         compositeDisposable = new CompositeDisposable();
         checkPermissions();
+    }
 
-        textViewCity.setOnClickListener(view -> new LovelyTextInputDialog(view.getContext(), R.color.colorPrimaryDark)
+    @Click
+    void textViewCity(){
+        new LovelyTextInputDialog(textViewCity.getContext(), R.color.colorPrimaryDark)
                 .setTopColorRes(R.color.colorPrimary)
                 .setTitle(R.string.text_location_dialog_title)
                 .setIcon(R.drawable.ic_location)
-                .setConfirmButton(android.R.string.ok, this::fetchWeeklyWeatherForecast)
-                .show());
+                .setConfirmButton(android.R.string.ok, MainActivity.this::fetchWeeklyWeatherForecast)
+                .show();
     }
 
     @Override
@@ -93,18 +98,17 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.clear();
     }
 
-    private void setBackground() {
-        backgroundWeatherLayout.setBackgroundResource(R.drawable.clear_day_background);
+    private void setBackground(WeatherType weatherType) {
+        backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(weatherType));
     }
 
     private void showWeatherData(DailyWeather dailyWeathers) {
-        imageViewWeather.setImageResource(weatherIconProvider.getWeatherIcon(dailyWeathers.getCurrently().getIcon()));
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
         textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
         textViewCity.setText(dailyWeathers.getLocationData().getCityName());
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
-        setBackground();
-
+        setBackground(dailyWeathers.getCurrently().getIcon());
     }
 
     private void handleError(Throwable throwable) {

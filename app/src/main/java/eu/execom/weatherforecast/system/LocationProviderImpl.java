@@ -3,16 +3,10 @@ package eu.execom.weatherforecast.system;
 import android.content.Context;
 import android.location.Location;
 
-import java.util.List;
-
 import eu.execom.weatherforecast.domain.Coordinates;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
-import io.nlopez.smartlocation.OnGeocodingListener;
 import io.nlopez.smartlocation.SmartLocation;
-import io.nlopez.smartlocation.geocoding.utils.LocationAddress;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
 
 public class LocationProviderImpl implements LocationProvider {
 
@@ -26,7 +20,7 @@ public class LocationProviderImpl implements LocationProvider {
     public Single<Coordinates> getCurrentLocation() {
         return Single.create(emitter -> SmartLocation.with(context).location()
                 .start(location -> {
-                    Coordinates coordinates = new Coordinates(location.getLongitude(),location.getLatitude());
+                    Coordinates coordinates = new Coordinates(location.getLongitude(), location.getLatitude());
                     emitter.onSuccess(coordinates);
                 }));
     }
@@ -41,8 +35,10 @@ public class LocationProviderImpl implements LocationProvider {
                             Location location = results.get(0).getLocation();
                             coordinatesByName.setLongitude(location.getLongitude());
                             coordinatesByName.setLatitude(location.getLatitude());
+                            emitter.onSuccess(coordinatesByName);
+                        } else {
+                            emitter.onError(new Throwable("Wrong name of location!"));
                         }
-                        emitter.onSuccess(coordinatesByName);
                     });
         });
     }
@@ -53,7 +49,13 @@ public class LocationProviderImpl implements LocationProvider {
         currentLocation.setLatitude(currentCoordinates.getLatitude());
         currentLocation.setLongitude(currentCoordinates.getLongitude());
         return Single.create(emitter -> SmartLocation.with(context).geocoding()
-                .reverse(currentLocation, (location, list) -> emitter.onSuccess(list.get(0).getLocality())));
+                .reverse(currentLocation, (location, list) -> {
+                    if (list.size() > 0) {
+                        emitter.onSuccess(list.get(0).getLocality());
+                    } else {
+                        emitter.onError(new Throwable("List of address is empty"));
+                    }
+                }));
     }
 }
 

@@ -37,7 +37,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
-        app:cardBackgroundColor="#A1FFFFFF"
+        app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
         tools:layout_editor_absoluteX="8dp"
