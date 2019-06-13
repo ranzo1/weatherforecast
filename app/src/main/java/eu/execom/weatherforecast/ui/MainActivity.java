@@ -23,6 +23,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
@@ -31,39 +32,57 @@ import eu.execom.weatherforecast.BuildConfig;
 import eu.execom.weatherforecast.ConverterTemperature;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
+import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
-import eu.execom.weatherforecast.ui.adapter.generic.DailyDataAdapter;
+import eu.execom.weatherforecast.ui.adapter.DailyDataAdapter;
+import eu.execom.weatherforecast.ui.adapter.DailyDataItemView;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DailyDataItemView.DailyDataItemActionListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private CompositeDisposable compositeDisposable;
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 1;
 
+    @Extra
+    String dailyWeather;
+
+    @Extra
+    String locationData;
+
     @Bean
     WeatherDrawableProvider weatherDrawableProvider;
+
     @Bean
     ConverterTemperature converterTemperature;
+
     @App
     MyApplication myApplication;
+
     @Inject
     WeatherUseCase weatherUseCase;
+
     @Bean
     DailyDataAdapter dailyDataAdapter;
+
     @ViewById
     TextView textViewTemperature;
+
     @ViewById
     TextView chooseCity;
+
     @ViewById
     TextView textViewDescription;
+
     @ViewById
     RecyclerView recyclerWeather;
+
     @ViewById
     RelativeLayout backgroundWeatherLayout;
+
     @ViewById
     ImageView imageViewWeather;
 
@@ -77,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         );
         recyclerWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         recyclerWeather.setAdapter(dailyDataAdapter);
+        dailyDataAdapter.setDailyDataItemActionListener(this);
         compositeDisposable = new CompositeDisposable();
         checkPermissions();
     }
@@ -99,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWeatherData(DailyWeather dailyWeathers) {
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
-        textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently())));
+        textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
@@ -144,5 +164,10 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(weatherUseCase.getWeatherForecast(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showWeatherData, this::handleError));
+    }
+
+    @Override
+    public void onItemClick(DailyData dailyData) {
+        SingleDayForecastActivity_.intent(this).dailyData(dailyData).start();
     }
 }

@@ -1,8 +1,9 @@
 package eu.execom.weatherforecast.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Daily {
+public class Daily implements Serializable {
 
     private String summary;
     private WeatherType icon;

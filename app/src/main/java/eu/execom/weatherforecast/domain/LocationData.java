@@ -1,6 +1,8 @@
 package eu.execom.weatherforecast.domain;
 
-public class LocationData {
+import java.io.Serializable;
+
+public class LocationData implements Serializable {
     private String cityName;
     private Coordinates coordinates;
 

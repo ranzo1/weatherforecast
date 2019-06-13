@@ -1,6 +1,7 @@
-package eu.execom.weatherforecast.ui.adapter.generic;
+package eu.execom.weatherforecast.ui.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,10 +21,13 @@ public class DailyDataItemView extends RelativeLayout {
 
     @Bean
     DateFormatter dateFormatter;
+
     @Bean
     WeatherDrawableProvider weatherDrawableProvider;
+
     @ViewById
     TextView textViewDay;
+
     @ViewById
     ImageView imageViewWeather;
 
@@ -33,10 +37,16 @@ public class DailyDataItemView extends RelativeLayout {
         int margin = context.getResources().getDimensionPixelSize(R.dimen.item_weather_margin);
         layoutParams.setMargins(margin, margin, margin, margin);
         setLayoutParams(layoutParams);
+        setClickable(true);
     }
 
-    public void bind(DailyData dailyData) {
+    public void bind(DailyData dailyData, DailyDataItemActionListener listener) {
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyData.getIcon()));
         textViewDay.setText(dateFormatter.toDay(dailyData.getTime()));
+            setOnClickListener(view -> listener.onItemClick(dailyData));
+    }
+
+    public interface DailyDataItemActionListener {
+        void onItemClick(DailyData dailyData);
     }
 }

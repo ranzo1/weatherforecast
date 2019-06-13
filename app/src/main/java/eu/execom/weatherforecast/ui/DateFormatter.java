@@ -15,4 +15,16 @@ public class DateFormatter {
 
         return new SimpleDateFormat("E").format(date);
     }
+
+    @SuppressLint("SimpleDateFormat")
+    public String toHour(Date date) {
+
+        return new SimpleDateFormat("h:mm a").format(date);
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public String toDate(Date date) {
+
+        return new SimpleDateFormat("EEE, d MMM yyyy").format(date);
+    }
 }
