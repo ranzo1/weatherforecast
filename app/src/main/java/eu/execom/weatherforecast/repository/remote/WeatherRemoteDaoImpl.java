@@ -34,7 +34,7 @@ public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
         modelMapper.createTypeMap(DailyDataDto.class, DailyData.class);
 
         modelMapper.createTypeMap(Long.class, Date.class)
-                .setConverter(input -> new Date(input.getSource()));
+                .setConverter(input -> new Date(input.getSource() * 1000));
 
         modelMapper.createTypeMap(String.class, WeatherType.class)
                 .setConverter(context -> {
@@ -60,7 +60,6 @@ public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
                         case "partly-cloudy-night":
                             return WeatherType.PARTLY_CLOUDY_NIGHT;
                     }
-
                     throw new IllegalArgumentException("Unsupported weather type: " + context.getSource());
                 });
     }

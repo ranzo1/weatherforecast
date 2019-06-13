@@ -50,6 +50,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$RecyclerViewVersion"
     implementation "com.google.android.gms:play-services-location:$PlayServicesLocationVersion"
     implementation "com.android.support:cardview-v7:$CardViewVersion"
+    implementation "com.android.support.constraint:constraint-layout:$ConstraintLayoutVersion"
     testImplementation "junit:junit:$JunitTestVersion"
     androidTestImplementation "com.android.support.test:runner:$TestRunnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$TestEspressoVersion"

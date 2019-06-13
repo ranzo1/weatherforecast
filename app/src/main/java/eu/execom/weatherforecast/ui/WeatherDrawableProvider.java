@@ -65,7 +65,7 @@ public class WeatherDrawableProvider {
             case HAIL:
                 return R.drawable.snow_background;
             case THUNDERSTORM:
-                return R.drawable.cloudy_background;
+                return R.drawable.thunderstorm_background;
             case TORNADO:
                 return R.drawable.cloudy_background;
         }

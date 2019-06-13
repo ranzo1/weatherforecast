@@ -1,30 +1,51 @@
 package eu.execom.weatherforecast.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DailyData {
+public class DailyData implements Serializable {
 
-    private int temperatureMinTime;
-    private int temperatureMaxTime;
+    private Date temperatureMinTime;
+    private Date temperatureMaxTime;
     private String summary;
     private WeatherType icon;
     private float temperatureMin;
     private float temperatureMax;
+    private float humidity;
+    private int uvIndex;
     private Date time;
+    private Date sunriseTime;
+    private Date sunsetTime;
 
-    public int getTemperatureMinTime() {
+    public Date getSunriseTime() {
+        return sunriseTime;
+    }
+
+    public void setSunriseTime(Date sunriseTime) {
+        this.sunriseTime = sunriseTime;
+    }
+
+    public Date getSunsetTime() {
+        return sunsetTime;
+    }
+
+    public void setSunsetTime(Date sunsetTime) {
+        this.sunsetTime = sunsetTime;
+    }
+
+    public Date getTemperatureMinTime() {
         return temperatureMinTime;
     }
 
-    public void setTemperatureMinTime(int temperatureMinTime) {
+    public void setTemperatureMinTime(Date temperatureMinTime) {
         this.temperatureMinTime = temperatureMinTime;
     }
 
-    public int getTemperatureMaxTime() {
+    public Date getTemperatureMaxTime() {
         return temperatureMaxTime;
     }
 
-    public void setTemperatureMaxTime(int temperatureMaxTime) {
+    public void setTemperatureMaxTime(Date temperatureMaxTime) {
         this.temperatureMaxTime = temperatureMaxTime;
     }
 
@@ -66,5 +87,21 @@ public class DailyData {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(float humidity) {
+        this.humidity = humidity;
+    }
+
+    public int getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(int uvIndex) {
+        this.uvIndex = uvIndex;
     }
 }

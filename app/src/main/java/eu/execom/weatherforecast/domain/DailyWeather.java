@@ -1,6 +1,8 @@
 package eu.execom.weatherforecast.domain;
 
-public class DailyWeather {
+import java.io.Serializable;
+
+public class DailyWeather implements Serializable {
 
     private String timezone;
     private Currently currently;

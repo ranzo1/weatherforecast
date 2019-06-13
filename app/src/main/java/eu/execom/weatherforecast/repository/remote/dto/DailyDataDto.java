@@ -2,27 +2,31 @@ package eu.execom.weatherforecast.repository.remote.dto;
 
 public class DailyDataDto {
 
-    private int temperatureMinTime;
-    private int temperatureMaxTime;
+    private Long temperatureMinTime;
+    private Long temperatureMaxTime;
     private String summary;
     private String icon;
     private float temperatureMin;
     private float temperatureMax;
-    private long time;
+    private Long time;
+    private float humidity;
+    private int uvIndex;
+    private Long sunriseTime;
+    private Long sunsetTime;
 
-    public int getTemperatureMinTime() {
+    public Long getTemperatureMinTime() {
         return temperatureMinTime;
     }
 
-    public void setTemperatureMinTime(int temperatureMinTime) {
+    public void setTemperatureMinTime(Long temperatureMinTime) {
         this.temperatureMinTime = temperatureMinTime;
     }
 
-    public int getTemperatureMaxTime() {
+    public Long getTemperatureMaxTime() {
         return temperatureMaxTime;
     }
 
-    public void setTemperatureMaxTime(int temperatureMaxTime) {
+    public void setTemperatureMaxTime(Long temperatureMaxTime) {
         this.temperatureMaxTime = temperatureMaxTime;
     }
 
@@ -58,11 +62,43 @@ public class DailyDataDto {
         this.temperatureMax = temperatureMax;
     }
 
-    public long getTime() {
-        return time * 1000;
+    public Long getTime() {
+        return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Long time) {
         this.time = time;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(float humidity) {
+        this.humidity = humidity;
+    }
+
+    public int getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(int uvIndex) {
+        this.uvIndex = uvIndex;
+    }
+
+    public Long getSunriseTime() {
+        return sunriseTime;
+    }
+
+    public void setSunriseTime(Long sunriseTime) {
+        this.sunriseTime = sunriseTime;
+    }
+
+    public Long getSunsetTime() {
+        return sunsetTime;
+    }
+
+    public void setSunsetTime(Long sunsetTime) {
+        this.sunsetTime = sunsetTime;
     }
 }
