@@ -11,7 +11,6 @@ import java.util.List;
 public abstract class RecyclerViewAdapterBase<T, V extends View> extends RecyclerView.Adapter<ViewWrapper<V>> {
 
     protected List<T> items = new ArrayList<>();
-    protected View.OnClickListener itemClickListener;
 
     @Override
     public ViewWrapper<V> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

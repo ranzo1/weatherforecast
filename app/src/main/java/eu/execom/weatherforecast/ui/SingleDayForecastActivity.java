@@ -11,7 +11,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import eu.execom.weatherforecast.ConverterTemperature;
+import eu.execom.weatherforecast.TemperatureConverter;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.LocationData;
@@ -29,7 +29,7 @@ public class SingleDayForecastActivity extends AppCompatActivity {
     WeatherDrawableProvider weatherDrawableProvider;
 
     @Bean
-    ConverterTemperature converterTemperature;
+    TemperatureConverter temperatureConverter;
 
     @Bean
     DateFormatter dataFormatter;
@@ -70,7 +70,7 @@ public class SingleDayForecastActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
-        showDataOfDailyItem();
+        showData();
         getSupportActionBar().hide();
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -78,10 +78,10 @@ public class SingleDayForecastActivity extends AppCompatActivity {
         );
     }
 
-    private void showDataOfDailyItem() {
+    private void showData() {
         textViewSummary.setText(dailyData.getSummary());
-        textViewTempMax.setText(String.valueOf((converterTemperature.convertToCelsius(dailyData.getTemperatureMax()))));
-        textViewTempMin.setText(String.valueOf((converterTemperature.convertToCelsius(dailyData.getTemperatureMin()))));
+        textViewTempMax.setText(String.valueOf((temperatureConverter.convertToCelsius(dailyData.getTemperatureMax()))));
+        textViewTempMin.setText(String.valueOf((temperatureConverter.convertToCelsius(dailyData.getTemperatureMin()))));
         textViewTimeTempMin.setText(String.valueOf(dataFormatter.toHour(dailyData.getTemperatureMinTime())));
         textViewTimeTempMax.setText(String.valueOf(dataFormatter.toHour(dailyData.getTemperatureMaxTime())));
         textViewDate.setText(String.valueOf(dataFormatter.toDate(dailyData.getTime())));

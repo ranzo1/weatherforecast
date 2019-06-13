@@ -23,13 +23,12 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
 import eu.execom.weatherforecast.BuildConfig;
-import eu.execom.weatherforecast.ConverterTemperature;
+import eu.execom.weatherforecast.TemperatureConverter;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.DailyData;
@@ -47,17 +46,11 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     private CompositeDisposable compositeDisposable;
     private static final int ACCESS_FINE_LOCATION_PERMISSION_REQUEST = 1;
 
-    @Extra
-    String dailyWeather;
-
-    @Extra
-    String locationData;
-
     @Bean
     WeatherDrawableProvider weatherDrawableProvider;
 
     @Bean
-    ConverterTemperature converterTemperature;
+    TemperatureConverter temperatureConverter;
 
     @App
     MyApplication myApplication;
@@ -119,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
     private void showWeatherData(DailyWeather dailyWeathers) {
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
-        textViewTemperature.setText(String.valueOf(converterTemperature.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
+        textViewTemperature.setText(String.valueOf(temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());

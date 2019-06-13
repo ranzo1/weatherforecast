@@ -1,7 +1,6 @@
 package eu.execom.weatherforecast.ui.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,9 +11,9 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import eu.execom.weatherforecast.R;
+import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.ui.DateFormatter;
 import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
-import eu.execom.weatherforecast.domain.DailyData;
 
 @EViewGroup(R.layout.daily_weather_item_view)
 public class DailyDataItemView extends RelativeLayout {
