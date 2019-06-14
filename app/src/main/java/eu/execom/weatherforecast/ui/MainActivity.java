@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     @Bean
     TemperatureConverter temperatureConverter;
 
+    @Bean
+    DateFormatter dateFormatter;
+
     @App
     MyApplication myApplication;
 
@@ -69,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
     @ViewById
     TextView textViewDescription;
+
+    @ViewById
+    TextView textViewSyncTime;
 
     @ViewById
     RecyclerView recyclerWeather;
@@ -114,9 +120,11 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
         textViewTemperature.setText(String.valueOf(temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
+        textViewSyncTime.setText(String.valueOf(dateFormatter.toDateAndTime(dailyWeathers.getLastTimeSync())));
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
         backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
+
     }
 
     private void handleError(Throwable throwable) {

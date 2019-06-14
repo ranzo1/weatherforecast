@@ -83,5 +83,16 @@
         android:layout_centerInParent="true"
         android:text="@string/description"
         android:textColor="@color/colorBlack" />
+    <TextView
+        android:id="@+id/textViewSyncTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sync_time"
+        android:textSize="12sp"
+        android:layout_below="@+id/chooseCity"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="3dp"
+        android:textColor="@color/colorBlack"
+        />
 
 </RelativeLayout>

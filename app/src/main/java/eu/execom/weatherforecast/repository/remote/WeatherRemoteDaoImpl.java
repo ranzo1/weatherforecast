@@ -59,6 +59,12 @@ public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
                             return WeatherType.PARTLY_CLOUDY_DAY;
                         case "partly-cloudy-night":
                             return WeatherType.PARTLY_CLOUDY_NIGHT;
+                        case "hail":
+                            return WeatherType.HAIL;
+                        case "thunderstorm":
+                            return WeatherType.THUNDERSTORM;
+                        case "tornado":
+                            return WeatherType.TORNADO;
                     }
                     throw new IllegalArgumentException("Unsupported weather type: " + context.getSource());
                 });

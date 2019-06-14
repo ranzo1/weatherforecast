@@ -37,7 +37,7 @@ public class WeatherDrawableProvider {
             case TORNADO:
                 return R.drawable.ic_tornado;
         }
-        return R.drawable.ic_tornado;
+        return R.drawable.ic_error;
     }
 
     public int getWeatherBackground(WeatherType weatherType) {
@@ -53,7 +53,7 @@ public class WeatherDrawableProvider {
             case SLEET:
                 return R.drawable.snow_background;
             case WIND:
-                return R.drawable.cloudy_background;
+                return R.drawable.wind_background;
             case FOG:
                 return R.drawable.fog_background;
             case CLOUDY:
@@ -69,6 +69,6 @@ public class WeatherDrawableProvider {
             case TORNADO:
                 return R.drawable.cloudy_background;
         }
-        return R.drawable.ic_tornado;
+        return R.drawable.ic_error;
     }
 }

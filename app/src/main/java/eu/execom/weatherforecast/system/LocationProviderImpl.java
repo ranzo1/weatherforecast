@@ -7,6 +7,8 @@ import eu.execom.weatherforecast.domain.Coordinates;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
 import io.nlopez.smartlocation.SmartLocation;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
 public class LocationProviderImpl implements LocationProvider {
 
@@ -56,4 +58,3 @@ public class LocationProviderImpl implements LocationProvider {
                 }));
     }
 }
-

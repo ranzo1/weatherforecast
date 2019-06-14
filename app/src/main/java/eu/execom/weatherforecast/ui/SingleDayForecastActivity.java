@@ -88,7 +88,9 @@ public class SingleDayForecastActivity extends AppCompatActivity {
         textViewUvIndex.setText(String.valueOf(dailyData.getUvIndex()));
         textViewHumidity.setText(String.valueOf(dailyData.getHumidity()));
         backgroundLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyData.getIcon()));
+        if(dailyData.getSunriseTime()!=null && dailyData.getSunsetTime()!= null){
         textViewSunrise.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunriseTime())));
         textViewSunset.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunsetTime())));
+        }
     }
 }

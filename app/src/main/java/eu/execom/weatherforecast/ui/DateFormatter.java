@@ -24,4 +24,9 @@ public class DateFormatter {
     public String toDate(Date date) {
         return new SimpleDateFormat("EEE, d MMM yyyy").format(date);
     }
+
+    @SuppressLint("SimpleDateFormat")
+    public String toDateAndTime(Date date) {
+        return new SimpleDateFormat("EEE, d MMM yyyy HH:mm").format(date);
+    }
 }

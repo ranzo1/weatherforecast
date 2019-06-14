@@ -5,6 +5,7 @@ import android.app.Application;
 
 import org.androidannotations.annotations.EApplication;
 
+import eu.execom.weatherforecast.repository.local.LocalRepositoryModule;
 import eu.execom.weatherforecast.repository.remote.RemoteRepositoryModule;
 import eu.execom.weatherforecast.system.SystemModule;
 import eu.execom.weatherforecast.usecase.UseCaseModule;
@@ -27,6 +28,7 @@ public class MyApplication extends Application {
                 .remoteRepositoryModule(new RemoteRepositoryModule(this))
                 .useCaseModule(new UseCaseModule())
                 .systemModule(new SystemModule(this))
+                .localRepositoryModule(new LocalRepositoryModule(this))
                 .build();
     }
 
