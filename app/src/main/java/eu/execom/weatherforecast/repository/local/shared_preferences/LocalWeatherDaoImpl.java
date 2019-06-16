@@ -1,8 +1,8 @@
 package eu.execom.weatherforecast.repository.local.shared_preferences;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
@@ -11,28 +11,21 @@ import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class LocalWeatherDaoImpl implements LocalWeatherDao {
 
-    private final Context context;
-    final static String DAILY_WEATHER = "DailyWeather";
-    final static String CURRENT_LOCATION_KEY = "currentLocation";
+    private final static String CURRENT_LOCATION_KEY = "currentLocation";
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     private Gson gson = new Gson();
 
-    @SuppressLint("CommitPrefEdits")
     public LocalWeatherDaoImpl(Context context) {
-        this.context = context;
-        sharedPreferences = context.getSharedPreferences(DAILY_WEATHER, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Override
     public Completable saveDailyWeather(DailyWeather dailyWeather, String city) {
         return Completable.fromAction(() -> {
             String dailyWeatherJsonString = gson.toJson(dailyWeather);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(city, dailyWeatherJsonString).apply();
         });
     }
@@ -41,6 +34,7 @@ public class LocalWeatherDaoImpl implements LocalWeatherDao {
     public Completable saveDailyWeatherForCurrentLocation(DailyWeather dailyWeather) {
         return Completable.fromAction(() -> {
             String dailyWeatherJsonString = gson.toJson(dailyWeather);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(CURRENT_LOCATION_KEY, dailyWeatherJsonString).apply();
         });
     }
