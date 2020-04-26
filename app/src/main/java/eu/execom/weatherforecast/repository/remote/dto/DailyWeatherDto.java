@@ -5,6 +5,7 @@ public class DailyWeatherDto {
   private String timezone;
   private CurrentlyDto currently;
   private DailyDto daily;
+  private HourlyDto hourly;
 
   public String getTimezone() {
     return timezone;
@@ -28,5 +29,13 @@ public class DailyWeatherDto {
 
   public void setDaily(DailyDto daily) {
     this.daily = daily;
+  }
+
+  public HourlyDto getHourly() {
+    return hourly;
+  }
+
+  public void setHourly(HourlyDto hourly) {
+    this.hourly = hourly;
   }
 }

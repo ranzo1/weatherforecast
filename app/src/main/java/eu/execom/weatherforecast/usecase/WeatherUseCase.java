@@ -5,11 +5,13 @@ import java.util.Date;
 
 import eu.execom.weatherforecast.domain.Coordinates;
 import eu.execom.weatherforecast.domain.DailyWeather;
+import eu.execom.weatherforecast.domain.Hourly;
 import eu.execom.weatherforecast.domain.LocationData;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalCoordinatesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
