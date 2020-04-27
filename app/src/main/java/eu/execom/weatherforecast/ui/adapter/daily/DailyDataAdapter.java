@@ -1,4 +1,4 @@
-package eu.execom.weatherforecast.ui.adapter;
+package eu.execom.weatherforecast.ui.adapter.daily;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

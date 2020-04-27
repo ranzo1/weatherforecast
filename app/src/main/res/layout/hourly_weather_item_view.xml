@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+     android:layout_width="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/hour"
+        android:textColor="@color/colorBlack"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="355dp" />
+
+    <ImageView
+        android:id="@+id/imageViewWeather"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/textViewHour"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/temperatureHourly"
+        android:text="temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewWeather"
+        android:textColor="@color/colorBlack" />
+</RelativeLayout>

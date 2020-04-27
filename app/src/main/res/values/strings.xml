@@ -5,6 +5,7 @@
     <string name="temperature">Temperature</string>
     <string name="description">Description</string>
     <string name="day">Day</string>
+    <string name="hour">Hour</string>
     <string name="weatherItemView">View visually represents weather of week days</string>
     <string name="city">City</string>
     <string name="text_location_dialog_title">Choose city location</string>

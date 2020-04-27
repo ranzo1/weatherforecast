@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.like.LikeButton;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -25,6 +26,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import eu.execom.weatherforecast.BuildConfig;
@@ -33,8 +36,10 @@ import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
-import eu.execom.weatherforecast.ui.adapter.DailyDataAdapter;
-import eu.execom.weatherforecast.ui.adapter.DailyDataItemView;
+import eu.execom.weatherforecast.domain.Hourly;
+import eu.execom.weatherforecast.ui.adapter.daily.DailyDataAdapter;
+import eu.execom.weatherforecast.ui.adapter.daily.DailyDataItemView;
+import eu.execom.weatherforecast.ui.adapter.hourly.HourlyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -64,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     @Bean
     DailyDataAdapter dailyDataAdapter;
 
+    @Bean
+    HourlyDataAdapter hourlyDataAdapter;
+
     @ViewById
     TextView textViewTemperature;
 
@@ -78,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
     @ViewById
     RecyclerView recyclerWeather;
+
+    @ViewById
+    RecyclerView recyclerWeatherHourly;
 
     @ViewById
     RelativeLayout backgroundWeatherLayout;
@@ -96,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         recyclerWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         recyclerWeather.setAdapter(dailyDataAdapter);
         dailyDataAdapter.setDailyDataItemActionListener(this);
+        recyclerWeatherHourly.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerWeatherHourly.setAdapter(hourlyDataAdapter);
         compositeDisposable = new CompositeDisposable();
         checkPermissions();
     }
@@ -123,8 +136,8 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         textViewSyncTime.setText(String.valueOf(dateFormatter.toDateAndTime(dailyWeathers.getLastTimeSync())));
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
+        hourlyDataAdapter.setItems(dailyWeathers.getHourly().getData());
         backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
-
     }
 
     private void handleError(Throwable throwable) {

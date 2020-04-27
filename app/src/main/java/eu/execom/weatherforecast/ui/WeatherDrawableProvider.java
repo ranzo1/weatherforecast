@@ -40,6 +40,38 @@ public class WeatherDrawableProvider {
         return R.drawable.ic_error;
     }
 
+    public int getWeatherIconsMonoColor(WeatherType weatherType){
+        switch (weatherType) {
+            case CLEAR_DAY:
+                return R.drawable.ic_sun;
+            case CLEAR_NIGHT:
+                return R.drawable.ic_moon_6;
+            case RAIN:
+                return R.drawable.ic_rain_1;
+            case SNOW:
+                return R.drawable.ic_snowflake;
+            case SLEET:
+                return R.drawable.ic_snowflake;
+            case WIND:
+                return R.drawable.ic_wind;
+            case FOG:
+                return R.drawable.ic_fog;
+            case CLOUDY:
+                return R.drawable.ic_cloud;
+            case PARTLY_CLOUDY_DAY:
+                return R.drawable.ic_cloud_day;
+            case PARTLY_CLOUDY_NIGHT:
+                return R.drawable.ic_cloud_night;
+            case HAIL:
+                return R.drawable.ic_hail;
+            case THUNDERSTORM:
+                return R.drawable.ic_bolt;
+            case TORNADO:
+                return R.drawable.ic_tornado;
+        }
+        return R.drawable.ic_error;
+    }
+
     public int getWeatherBackground(WeatherType weatherType) {
         switch (weatherType) {
             case CLEAR_DAY:
