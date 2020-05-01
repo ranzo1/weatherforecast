@@ -21,4 +21,9 @@
     <string name="sunrise">sunrise</string>
     <string name="sunset">sunset</string>
     <string name="sync_time">Sync time</string>
+    <string name="addCityToFavourites">Added to favourites!</string>
+    <string name="removeCityFromFavourites">Removed from favourites!</string>
+    <string name="choose_city">Choose city</string>
+    <string name="choose_place">Choose place</string>
+    <string name="display_weather_for_chosen_place">Display weather for chosen place</string>
 </resources>

@@ -44,6 +44,7 @@ def NoboButtonVersion = "1.6"
 def EZDialogVersion = "1.0.4"
 def LovelyDialogVersion = "1.1.0"
 def LikeButtonVersion = "0.2.3"
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:$AppCompatVersion"

@@ -21,9 +21,9 @@ public class WeatherDrawableProvider {
             case SLEET:
                 return R.drawable.ic_sleet;
             case WIND:
-                return R.drawable.ic_wind;
+                return R.drawable.ic_wind_color;
             case FOG:
-                return R.drawable.ic_fog;
+                return R.drawable.ic_fog_color;
             case CLOUDY:
                 return R.drawable.ic_cloudy;
             case PARTLY_CLOUDY_DAY:
@@ -31,16 +31,16 @@ public class WeatherDrawableProvider {
             case PARTLY_CLOUDY_NIGHT:
                 return R.drawable.ic_partly_cloudy_night;
             case HAIL:
-                return R.drawable.ic_hail;
+                return R.drawable.ic_hail_color;
             case THUNDERSTORM:
                 return R.drawable.ic_thunderstorm;
             case TORNADO:
-                return R.drawable.ic_tornado;
+                return R.drawable.ic_tornado_color;
         }
         return R.drawable.ic_error;
     }
 
-    public int getWeatherIconsMonoColor(WeatherType weatherType){
+    public int getWeatherIconsMonoColor(WeatherType weatherType) {
         switch (weatherType) {
             case CLEAR_DAY:
                 return R.drawable.ic_sun;
@@ -102,5 +102,15 @@ public class WeatherDrawableProvider {
                 return R.drawable.cloudy_background;
         }
         return R.drawable.ic_error;
+    }
+
+    public int getTemperatureImage(int temperature) {
+        if (temperature <= 0) {
+            return R.drawable.ic_thermometer_low;
+        }
+        if (temperature >= 30) {
+            return R.drawable.ic_thermometer_high;
+        }
+        return R.drawable.ic_thermometer_medium;
     }
 }

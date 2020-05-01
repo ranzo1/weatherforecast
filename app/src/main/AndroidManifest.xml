@@ -16,10 +16,10 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.SingleDayForecastActivity_"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity_"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
