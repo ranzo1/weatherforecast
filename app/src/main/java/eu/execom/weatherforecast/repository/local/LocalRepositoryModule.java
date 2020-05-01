@@ -6,8 +6,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import eu.execom.weatherforecast.repository.local.shared_preferences.FavoriteCitiesDaoImpl;
 import eu.execom.weatherforecast.repository.local.shared_preferences.LocalCoordinatesDaoImpl;
 import eu.execom.weatherforecast.repository.local.shared_preferences.LocalWeatherDaoImpl;
+import eu.execom.weatherforecast.usecase.dependency.repository.FavoriteCitiesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalCoordinatesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
 
@@ -30,5 +32,11 @@ public class LocalRepositoryModule {
     @Singleton
     LocalCoordinatesDao provideLocalCoordinatesDao() {
         return new LocalCoordinatesDaoImpl(context);
+    }
+
+    @Provides
+    @Singleton
+    FavoriteCitiesDao provideFavoriteCitiesDao() {
+        return new FavoriteCitiesDaoImpl(context);
     }
 }

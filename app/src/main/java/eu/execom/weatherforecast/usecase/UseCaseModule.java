@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import eu.execom.weatherforecast.usecase.dependency.repository.FavoriteCitiesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalCoordinatesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
@@ -14,7 +15,7 @@ public class UseCaseModule {
 
     @Provides
     @Singleton
-    WeatherUseCase provideWeatherUseCase(WeatherRemoteDao weatherRemoteDao, LocationProvider locationProvider, LocalWeatherDao localWeatherDao, LocalCoordinatesDao localCoordinatesDao) {
-        return new WeatherUseCase(weatherRemoteDao, locationProvider, localWeatherDao, localCoordinatesDao);
+    WeatherUseCase provideWeatherUseCase(WeatherRemoteDao weatherRemoteDao, LocationProvider locationProvider, LocalWeatherDao localWeatherDao, LocalCoordinatesDao localCoordinatesDao, FavoriteCitiesDao favoriteCitiesDao) {
+        return new WeatherUseCase(weatherRemoteDao, locationProvider, localWeatherDao, localCoordinatesDao, favoriteCitiesDao);
     }
 }

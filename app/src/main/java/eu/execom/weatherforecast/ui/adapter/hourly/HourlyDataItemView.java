@@ -37,6 +37,9 @@ public class HourlyDataItemView extends RelativeLayout {
     @ViewById
     TextView temperatureHourly;
 
+    @ViewById
+    ImageView temperatureHourlyIcon;
+
     public HourlyDataItemView(Context context) {
         super(context);
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -50,5 +53,6 @@ public class HourlyDataItemView extends RelativeLayout {
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(hourlyData.getIcon()));
         textViewHour.setText(dateFormatter.toHour(hourlyData.getTime()));
         temperatureHourly.setText(String.valueOf(temperatureConverter.convertToCelsius(hourlyData.getTemperature())));
+        temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureImage(temperatureConverter.convertToCelsius(hourlyData.getTemperature())));
     }
 }

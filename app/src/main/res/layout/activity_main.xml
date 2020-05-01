@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+    <ImageView
+        android:id="@+id/favoriteCities"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="30dp"
+        android:background="@drawable/ic_favourite_location"
+        android:layout_alignParentTop="true"/>
+
     <TextView
         android:id="@+id/chooseCity"
         android:layout_width="wrap_content"
@@ -30,13 +39,25 @@
         android:textSize="40sp"
         android:textStyle="bold" />
 
+    <com.like.LikeButton
+        android:id="@+id/addCityToFavoritesButton"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/textViewSyncTime"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        app:icon_size="20dp"
+        app:icon_type="star">
+
+    </com.like.LikeButton>
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardViewHourly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewSyncTime"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/addCityToFavoritesButton"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:padding="10dp"
         app:cardBackgroundColor="@color/lightTransparent"
         app:cardCornerRadius="5dp"
@@ -67,7 +88,7 @@
             android:id="@+id/recyclerWeather"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
 
     <ImageView
         android:id="@+id/imageViewLocation"
@@ -88,8 +109,8 @@
 
     <ImageView
         android:id="@+id/imageViewTemperature"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_below="@id/imageViewWeather"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/textViewTemperature"
@@ -108,12 +129,11 @@
         android:id="@+id/textViewSyncTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sync_time"
-        android:textSize="12sp"
         android:layout_below="@+id/chooseCity"
         android:layout_centerHorizontal="true"
         android:layout_margin="3dp"
+        android:text="@string/sync_time"
         android:textColor="@color/colorBlack"
-        />
+        android:textSize="12sp" />
 
 </RelativeLayout>

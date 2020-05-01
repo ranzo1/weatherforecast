@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.like.LikeButton;
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -31,12 +32,11 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import eu.execom.weatherforecast.BuildConfig;
-import eu.execom.weatherforecast.TemperatureConverter;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
+import eu.execom.weatherforecast.TemperatureConverter;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
-import eu.execom.weatherforecast.domain.Hourly;
 import eu.execom.weatherforecast.ui.adapter.daily.DailyDataAdapter;
 import eu.execom.weatherforecast.ui.adapter.daily.DailyDataItemView;
 import eu.execom.weatherforecast.ui.adapter.hourly.HourlyDataAdapter;
@@ -96,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     @ViewById
     ImageView imageViewWeather;
 
+    @ViewById
+    LikeButton addCityToFavoritesButton;
+
+    @ViewById
+    ImageView favoriteCities;
+
     @AfterViews
     void init() {
         myApplication.getComponent().inject(this);
@@ -114,13 +120,56 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     }
 
     @Click
-    void chooseCity() {
-        new LovelyTextInputDialog(chooseCity.getContext(), R.color.colorPrimaryDark)
+    void favoriteCities() {
+        new LovelyChoiceDialog(this)
                 .setTopColorRes(R.color.colorPrimary)
-                .setTitle(R.string.text_location_dialog_title)
+                .setTitle("Choose favorite place")
+                .setIcon(R.drawable.ic_favourite_location)
+                .setMessage("Display weather for chosen place")
+                .setItems(getFavouriteCities(), this::onFavoriteCitySelected)
+                .show();
+    }
+
+    @Click
+    void chooseCity() {
+        new LovelyTextInputDialog(this)
+                .setTopColorRes(R.color.colorPrimary)
+                .setTitle(R.string.choose_place)
+                .setMessage(R.string.display_weather_for_chosen_place)
                 .setIcon(R.drawable.ic_location)
                 .setConfirmButton(android.R.string.ok, MainActivity.this::fetchWeeklyWeatherForecast)
                 .show();
+    }
+
+    @Click
+    void addCityToFavoritesButton() {
+        if (!addCityToFavoritesButton.isLiked()) {
+            if (!isFavouriteCity(chooseCity.getText().toString())) {
+                addCityToFavoritesButton.setLiked(true);
+                addCityToFavourites(chooseCity.getText().toString());
+                Toast.makeText(myApplication, R.string.addCityToFavourites, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            addCityToFavoritesButton.setLiked(false);
+            removeCityFromFavourites(chooseCity.getText().toString());
+            Toast.makeText(myApplication, R.string.removeCityFromFavourites, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addCityToFavourites(String city) {
+        weatherUseCase.addCitiesToFavorites(city);
+    }
+
+    private void removeCityFromFavourites(String city) {
+        weatherUseCase.removeCityFromFavorites(city);
+    }
+
+    private boolean isFavouriteCity(String city) {
+        return weatherUseCase.isFavouriteCity(city);
+    }
+
+    private ArrayList<String> getFavouriteCities() {
+        return weatherUseCase.getFavouriteCities();
     }
 
     @Override
@@ -130,11 +179,16 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     }
 
     private void showWeatherData(DailyWeather dailyWeathers) {
-        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(dailyWeathers.getCurrently().getIcon()));
         textViewTemperature.setText(String.valueOf(temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
         textViewSyncTime.setText(String.valueOf(dateFormatter.toDateAndTime(dailyWeathers.getLastTimeSync())));
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
+        if (isFavouriteCity(chooseCity.getText().toString())) {
+            addCityToFavoritesButton.setLiked(true);
+        } else {
+            addCityToFavoritesButton.setLiked(false);
+        }
         dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
         hourlyDataAdapter.setItems(dailyWeathers.getHourly().getData());
         backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
@@ -183,5 +237,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     @Override
     public void onItemClick(DailyData dailyData) {
         SingleDayForecastActivity_.intent(this).dailyData(dailyData).start();
+    }
+
+    private void onFavoriteCitySelected(int position, String city) {
+        fetchWeeklyWeatherForecast(city);
     }
 }

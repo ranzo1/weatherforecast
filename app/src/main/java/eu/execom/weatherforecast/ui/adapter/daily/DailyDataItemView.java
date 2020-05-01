@@ -41,7 +41,7 @@ public class DailyDataItemView extends RelativeLayout {
     }
 
     public void bind(DailyData dailyData, DailyDataItemActionListener listener) {
-        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyData.getIcon()));
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(dailyData.getIcon()));
         textViewDay.setText(dateFormatter.toDay(dailyData.getTime()));
             setOnClickListener(view -> listener.onItemClick(dailyData));
     }

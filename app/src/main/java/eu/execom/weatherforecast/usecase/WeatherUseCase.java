@@ -1,17 +1,17 @@
 package eu.execom.weatherforecast.usecase;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import eu.execom.weatherforecast.domain.Coordinates;
 import eu.execom.weatherforecast.domain.DailyWeather;
-import eu.execom.weatherforecast.domain.Hourly;
 import eu.execom.weatherforecast.domain.LocationData;
+import eu.execom.weatherforecast.usecase.dependency.repository.FavoriteCitiesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalCoordinatesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
@@ -23,13 +23,15 @@ public class WeatherUseCase {
     private LocationProvider locationProvider;
     private LocalWeatherDao localWeatherDao;
     private LocalCoordinatesDao localCoordinatesDao;
+    private FavoriteCitiesDao favoriteCitiesDao;
 
 
-    public WeatherUseCase(WeatherRemoteDao weatherRemoteDao, LocationProvider locationProvider, LocalWeatherDao localWeatherDao, LocalCoordinatesDao localCoordinatesDao) {
+    public WeatherUseCase(WeatherRemoteDao weatherRemoteDao, LocationProvider locationProvider, LocalWeatherDao localWeatherDao, LocalCoordinatesDao localCoordinatesDao, FavoriteCitiesDao favoriteCitiesDao) {
         this.weatherRemoteDao = weatherRemoteDao;
         this.locationProvider = locationProvider;
         this.localWeatherDao = localWeatherDao;
         this.localCoordinatesDao = localCoordinatesDao;
+        this.favoriteCitiesDao = favoriteCitiesDao;
     }
 
     public Single<DailyWeather> getWeatherForecastForCurrentLocation() {
@@ -62,5 +64,21 @@ public class WeatherUseCase {
                         .doOnSuccess(dailyWeather -> localWeatherDao.saveDailyWeather(dailyWeather, cityName).subscribe())
                         .onErrorReturn(throwable -> localWeatherDao.getForecast(cityName).blockingGet())
                         .subscribeOn(Schedulers.io()));
+    }
+
+    public void addCitiesToFavorites(String city) {
+        favoriteCitiesDao.addCityToFavourites(city);
+    }
+
+    public void removeCityFromFavorites(String city) {
+        favoriteCitiesDao.removeCityFromFavourites(city);
+    }
+
+    public boolean isFavouriteCity(String city) {
+        return favoriteCitiesDao.isFavouriteCity(city);
+    }
+
+    public ArrayList<String> getFavouriteCities() {
+        return favoriteCitiesDao.getFavouriteCities();
     }
 }
