@@ -26,4 +26,9 @@
     <string name="choose_city">Choose city</string>
     <string name="choose_place">Choose place</string>
     <string name="display_weather_for_chosen_place">Display weather for chosen place</string>
+    <string name="choose_favorite_place">Choose favorite place</string>
+    <string name="hourly">Hourly</string>
+    <string name="daily">Daily</string>
+    <string name="details">Details</string>
+    <string name="no_data">No data</string>
 </resources>

@@ -5,135 +5,310 @@
     android:id="@+id/backgroundWeatherLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/clear_night_background"
     tools:context=".ui.MainActivity">
 
-    <ImageView
-        android:id="@+id/favoriteCities"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="30dp"
-        android:background="@drawable/ic_favourite_location"
-        android:layout_alignParentTop="true"/>
-
-    <TextView
-        android:id="@+id/chooseCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageViewLocation"
-        android:layout_centerInParent="true"
-        android:text="@string/current_location"
-        android:textColor="@color/colorBlack"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textViewTemperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageViewWeather"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="5dp"
-        android:text="@string/temperature"
-        android:textColor="@color/colorBlack"
-        android:textSize="40sp"
-        android:textStyle="bold" />
-
-    <com.like.LikeButton
-        android:id="@+id/addCityToFavoritesButton"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_below="@+id/textViewSyncTime"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        app:icon_size="20dp"
-        app:icon_type="star">
-
-    </com.like.LikeButton>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardViewHourly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addCityToFavoritesButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:padding="10dp"
-        app:cardBackgroundColor="@color/lightTransparent"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="0dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="70dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerWeatherHourly"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardViewDaily"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        app:cardBackgroundColor="@color/lightTransparent"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="0dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="70dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerWeather"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v7.widget.CardView>
-
-    <ImageView
-        android:id="@+id/imageViewLocation"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_below="@+id/textViewDescription"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/ic_location" />
-
-    <ImageView
-        android:id="@+id/imageViewWeather"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50dp" />
-
-    <ImageView
-        android:id="@+id/imageViewTemperature"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_below="@id/imageViewWeather"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/textViewTemperature"
-        android:background="@drawable/ic_thermometer" />
-
-    <TextView
-        android:id="@+id/textViewDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewTemperature"
-        android:layout_centerInParent="true"
-        android:text="@string/description"
-        android:textColor="@color/colorBlack" />
-
-    <TextView
-        android:id="@+id/textViewSyncTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chooseCity"
         android:layout_centerHorizontal="true"
-        android:layout_margin="3dp"
-        android:text="@string/sync_time"
-        android:textColor="@color/colorBlack"
-        android:textSize="12sp" />
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:lottie_fileName="partly_cloudy_animation.json"
+        app:lottie_loop="true" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:indicatorColor="@color/dataColor"
+        app:indicatorName="BallPulseIndicator" />
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/almostTransparent">
+
+        <ImageView
+            android:id="@+id/favoriteCities"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="30dp"
+            android:background="@drawable/ic_favourite_location" />
+
+        <ImageView
+            android:id="@+id/currentLocation"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="30dp"
+            android:background="@drawable/ic_current_location" />
+
+
+        <TextView
+            android:id="@+id/chooseCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewLocation"
+            android:layout_centerInParent="true"
+            android:text="@string/current_location"
+            android:textColor="@color/dataColor"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewWeather"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/temperature"
+            android:textColor="@color/dataColor"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <com.like.LikeButton
+            android:id="@+id/addCityToFavoritesButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/textViewSyncTime"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            app:unlike_drawable="@drawable/star_disliked"
+            app:like_drawable="@drawable/star_liked"
+            app:icon_size="20dp"
+            app:icon_type="star">
+
+        </com.like.LikeButton>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/addCityToFavoritesButton">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/hourly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="7dp"
+                    android:text="@string/hourly"
+                    android:textColor="@color/colorWhiteLight"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/daily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardViewHourly"
+                    android:layout_marginStart="7dp"
+                    android:text="@string/daily"
+                    android:textColor="@color/colorWhiteLight"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardViewHourly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/hourly"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="6dp"
+                    android:padding="10dp"
+                    app:cardBackgroundColor="@color/lightTransparent"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="70dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerWeatherHourly"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardViewDaily"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/cardViewHourly"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:padding="10dp"
+                    app:cardBackgroundColor="@color/lightTransparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="70dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerWeather"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:id="@+id/details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardViewDaily"
+                    android:layout_marginStart="7dp"
+                    android:text="@string/details"
+                    android:textColor="@color/colorWhiteLight"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardViewAdditionalData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/details"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:padding="10dp"
+                    app:cardBackgroundColor="@color/almostTransparent"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="70dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/ic_uv" />
+
+                        <TextView
+                            android:id="@+id/uvIndex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20sp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/dataColor"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/ic_sunrise" />
+
+                        <TextView
+                            android:id="@+id/sunrise"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20sp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/dataColor"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/ic_sunset" />
+
+                        <TextView
+                            android:id="@+id/sunset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20sp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/dataColor"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/ic_humidity" />
+
+                        <TextView
+                            android:id="@+id/humidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20sp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/dataColor"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/imageViewLocation"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/textViewDescription"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_location" />
+
+        <ImageView
+            android:id="@+id/imageViewWeather"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp" />
+
+        <ImageView
+            android:id="@+id/imageViewTemperature"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_above="@id/textViewDescription"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/textViewTemperature" />
+
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewTemperature"
+            android:layout_centerInParent="true"
+            android:text="@string/description"
+            android:textColor="@color/dataColor" />
+
+        <TextView
+            android:id="@+id/textViewSyncTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chooseCity"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="3dp"
+            android:text="@string/sync_time"
+            android:textColor="@color/dataColor"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

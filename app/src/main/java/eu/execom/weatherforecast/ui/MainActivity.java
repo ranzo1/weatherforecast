@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.like.LikeButton;
+import com.wang.avi.AVLoadingIndicatorView;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
@@ -28,6 +33,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -60,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     @Bean
     DateFormatter dateFormatter;
 
+    @Bean
+    WeatherPercentageFormatter percentageFormatter;
+
     @App
     MyApplication myApplication;
 
@@ -85,6 +94,24 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     TextView textViewSyncTime;
 
     @ViewById
+    TextView temperatureHighest;
+
+    @ViewById
+    TextView temperatureLowest;
+
+    @ViewById
+    TextView uvIndex;
+
+    @ViewById
+    TextView sunrise;
+
+    @ViewById
+    TextView sunset;
+
+    @ViewById
+    TextView humidity;
+
+    @ViewById
     RecyclerView recyclerWeather;
 
     @ViewById
@@ -102,14 +129,38 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     @ViewById
     ImageView favoriteCities;
 
+    @ViewById
+    ImageView imageViewTemperature;
+
+    @ViewById
+    ImageView currentLocation;
+
+    @ViewById
+    AVLoadingIndicatorView avi;
+
+    @ViewById
+    RelativeLayout container;
+
+    @ViewById
+    CardView cardViewHourly;
+
+    @ViewById
+    CardView cardViewDaily;
+
+    @ViewById
+    CardView cardViewAdditionalData;
+
     @AfterViews
     void init() {
+        container.setVisibility(View.INVISIBLE);
         myApplication.getComponent().inject(this);
         getSupportActionBar().hide();
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
+
+        avi.show();
         recyclerWeather.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
         recyclerWeather.setAdapter(dailyDataAdapter);
         dailyDataAdapter.setDailyDataItemActionListener(this);
@@ -123,9 +174,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     void favoriteCities() {
         new LovelyChoiceDialog(this)
                 .setTopColorRes(R.color.colorPrimary)
-                .setTitle("Choose favorite place")
+                .setTitle(R.string.choose_favorite_place)
                 .setIcon(R.drawable.ic_favourite_location)
-                .setMessage("Display weather for chosen place")
+                .setMessage(R.string.display_weather_for_chosen_place)
                 .setItems(getFavouriteCities(), this::onFavoriteCitySelected)
                 .show();
     }
@@ -139,6 +190,14 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
                 .setIcon(R.drawable.ic_location)
                 .setConfirmButton(android.R.string.ok, MainActivity.this::fetchWeeklyWeatherForecast)
                 .show();
+    }
+
+    @Click
+    void currentLocation() {
+        avi.setVisibility(View.VISIBLE);
+        avi.show();
+        container.setVisibility(View.INVISIBLE);
+        fetchWeeklyWeatherForecastForCurrentLocation();
     }
 
     @Click
@@ -178,20 +237,53 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         compositeDisposable.clear();
     }
 
+    private void animate() {
+        List<Integer> views = new ArrayList<>();
+        views.add(R.id.cardViewHourly);
+        views.add(R.id.cardViewDaily);
+        views.add(R.id.imageViewWeather);
+        views.add(R.id.cardViewAdditionalData);
+
+        for (int id : views) {
+            YoYo.with(Techniques.FadeInRight)
+                    .duration(1000)
+                    .repeat(0)
+                    .playOn(findViewById(id));
+        }
+    }
+
     private void showWeatherData(DailyWeather dailyWeathers) {
-        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(dailyWeathers.getCurrently().getIcon()));
-        textViewTemperature.setText(String.valueOf(temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
+        List<DailyData> dailyDataList = dailyWeathers.getDaily().getData();
+        String humidityPercentage = percentageFormatter.getPercentage(dailyDataList.get(0).getHumidity()) + "%";
+        String temperatureCelsius = temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature()) + "°";
+
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyWeathers.getCurrently().getIcon()));
+        textViewTemperature.setText(temperatureCelsius);
         textViewDescription.setText(dailyWeathers.getCurrently().getSummary());
         textViewSyncTime.setText(String.valueOf(dateFormatter.toDateAndTime(dailyWeathers.getLastTimeSync())));
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
+        uvIndex.setText(String.valueOf((dailyDataList.get(0).getUvIndex())));
+        if (dailyDataList.get(0).getSunriseTime() != null && dailyDataList.get(0).getSunsetTime() != null) {
+            sunrise.setText(dateFormatter.toHour(dailyDataList.get(0).getSunriseTime()));
+            sunset.setText(dateFormatter.toHour(dailyDataList.get(0).getSunsetTime()));
+        } else {
+            sunrise.setText(R.string.no_data);
+            sunset.setText(R.string.no_data);
+        }
+        humidity.setText(humidityPercentage);
+        animate();
+
         if (isFavouriteCity(chooseCity.getText().toString())) {
             addCityToFavoritesButton.setLiked(true);
         } else {
             addCityToFavoritesButton.setLiked(false);
         }
-        dailyDataAdapter.setItems(dailyWeathers.getDaily().getData());
+        imageViewTemperature.setImageResource(weatherDrawableProvider.getTemperatureImage(temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
+        dailyDataAdapter.setItems(dailyDataList);
         hourlyDataAdapter.setItems(dailyWeathers.getHourly().getData());
         backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
+        avi.hide();
+        container.setVisibility(View.VISIBLE);
     }
 
     private void handleError(Throwable throwable) {
@@ -212,7 +304,8 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == ACCESS_FINE_LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 fetchWeeklyWeatherForecastForCurrentLocation();

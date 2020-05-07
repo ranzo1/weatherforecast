@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="@string/hour"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/dataColor"
         tools:layout_editor_absoluteX="176dp"
         tools:layout_editor_absoluteY="355dp" />
 
@@ -25,16 +25,30 @@
         android:id="@+id/temperatureHourlyIcon"
         android:layout_width="17dp"
         android:layout_height="17dp"
-        android:layout_toEndOf="@+id/temperatureHourly"
         android:layout_below="@+id/imageViewWeather"
-        />
+        android:layout_toEndOf="@+id/temperatureHourly"
+        android:layout_marginTop="3dp"/>
+
+    <ImageView
+        android:id="@+id/precipProbabilityImage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_below="@+id/temperatureHourly" />
+
+    <TextView
+        android:id="@+id/precipProbabilityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="20sp"
+        android:layout_below="@+id/precipProbabilityImage"
+        android:textColor="@color/dataColor"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/temperatureHourly"
-        android:layout_width="25sp"
-        android:layout_height="25sp"
-        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="30sp"
         android:layout_below="@+id/imageViewWeather"
         android:text="@string/temperature"
-        android:textColor="@color/colorBlack" />
+        android:textColor="@color/dataColor"
+        android:textStyle="bold" />
 </RelativeLayout>

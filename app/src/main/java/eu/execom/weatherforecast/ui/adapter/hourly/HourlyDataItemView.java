@@ -15,6 +15,7 @@ import eu.execom.weatherforecast.TemperatureConverter;
 import eu.execom.weatherforecast.domain.HourlyData;
 import eu.execom.weatherforecast.ui.DateFormatter;
 import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
+import eu.execom.weatherforecast.ui.WeatherPercentageFormatter;
 
 @EViewGroup(R.layout.hourly_weather_item_view)
 public class HourlyDataItemView extends RelativeLayout {
@@ -28,6 +29,9 @@ public class HourlyDataItemView extends RelativeLayout {
     @Bean
     TemperatureConverter temperatureConverter;
 
+    @Bean
+    WeatherPercentageFormatter percentageFormatter;
+
     @ViewById
     TextView textViewHour;
 
@@ -40,6 +44,12 @@ public class HourlyDataItemView extends RelativeLayout {
     @ViewById
     ImageView temperatureHourlyIcon;
 
+    @ViewById
+    TextView precipProbabilityTextView;
+
+    @ViewById
+    ImageView precipProbabilityImage;
+
     public HourlyDataItemView(Context context) {
         super(context);
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -50,9 +60,16 @@ public class HourlyDataItemView extends RelativeLayout {
     }
 
     public void bind(HourlyData hourlyData) {
-        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(hourlyData.getIcon()));
+        String temperatureCelsius = temperatureConverter.convertToCelsius(hourlyData.getTemperature()) + "°";
+        int temperature = temperatureConverter.convertToCelsius(hourlyData.getTemperature());
+        int precipProbability = percentageFormatter.getPercentage(hourlyData.getPrecipProbability());
+        String precipProbabilityPercent = precipProbability + "%";
+
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(hourlyData.getIcon()));
         textViewHour.setText(dateFormatter.toHour(hourlyData.getTime()));
-        temperatureHourly.setText(String.valueOf(temperatureConverter.convertToCelsius(hourlyData.getTemperature())));
-        temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureImage(temperatureConverter.convertToCelsius(hourlyData.getTemperature())));
+        temperatureHourly.setText(temperatureCelsius);
+        temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureImage(temperature));
+        precipProbabilityTextView.setText(precipProbabilityPercent);
+        precipProbabilityImage.setImageResource(weatherDrawableProvider.getPrecipProbabilityImage(precipProbability));
     }
 }

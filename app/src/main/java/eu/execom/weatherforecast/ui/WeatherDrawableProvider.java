@@ -19,9 +19,9 @@ public class WeatherDrawableProvider {
             case SNOW:
                 return R.drawable.ic_snow;
             case SLEET:
-                return R.drawable.ic_sleet;
+                return R.drawable.ic_snow;
             case WIND:
-                return R.drawable.ic_wind_color;
+                return R.drawable.ic_cloud_2;
             case FOG:
                 return R.drawable.ic_fog_color;
             case CLOUDY:
@@ -112,5 +112,41 @@ public class WeatherDrawableProvider {
             return R.drawable.ic_thermometer_high;
         }
         return R.drawable.ic_thermometer_medium;
+    }
+
+    public int getPrecipProbabilityImage(int probability) {
+        if (probability <= 20) {
+            return R.drawable.ic_drop_0;
+        }
+        if (probability < 50) {
+            return R.drawable.ic_drop_40;
+        }
+        if (probability <= 60) {
+            return R.drawable.ic_drop_50;
+        }
+        if (probability < 100) {
+            return R.drawable.ic_drop_80;
+        }
+        if (probability == 100) {
+            return R.drawable.ic_drop_100;
+        }
+
+        return R.drawable.ic_error;
+    }
+
+    public int getMaxTemperatureImage(int temperature) {
+        if (temperature <= 0) {
+            return R.drawable.ic_temp_1;
+        }
+        if (temperature <= 10) {
+            return R.drawable.ic_temp_2;
+        }
+        if (temperature <= 15) {
+            return R.drawable.ic_temp_3;
+        }
+        if (temperature < 30) {
+            return R.drawable.ic_temp_4;
+        }
+        return R.drawable.ic_temp_5;
     }
 }

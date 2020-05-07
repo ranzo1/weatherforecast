@@ -12,6 +12,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import eu.execom.weatherforecast.R;
+import eu.execom.weatherforecast.TemperatureConverter;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.ui.DateFormatter;
 import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
@@ -25,11 +26,23 @@ public class DailyDataItemView extends RelativeLayout {
     @Bean
     WeatherDrawableProvider weatherDrawableProvider;
 
+    @Bean
+    TemperatureConverter temperatureConverter;
+
     @ViewById
     TextView textViewDay;
 
     @ViewById
+    TextView temperatureHighest;
+
+    @ViewById
+    TextView temperatureLowest;
+
+    @ViewById
     ImageView imageViewWeather;
+
+    @ViewById
+    ImageView imageViewMaxTemperature;
 
     public DailyDataItemView(Context context) {
         super(context);
@@ -41,9 +54,15 @@ public class DailyDataItemView extends RelativeLayout {
     }
 
     public void bind(DailyData dailyData, DailyDataItemActionListener listener) {
-        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(dailyData.getIcon()));
+        String maxTemperatureCelsius = temperatureConverter.convertToCelsius(dailyData.getTemperatureMax()) + "°";
+        String minTemperatureCelsius = temperatureConverter.convertToCelsius(dailyData.getTemperatureMin()) + "°";
+        int maxTemperature = temperatureConverter.convertToCelsius(dailyData.getTemperatureMax());
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyData.getIcon()));
+        imageViewMaxTemperature.setImageResource(weatherDrawableProvider.getMaxTemperatureImage(maxTemperature));
+        temperatureHighest.setText(maxTemperatureCelsius);
+        temperatureLowest.setText(minTemperatureCelsius);
         textViewDay.setText(dateFormatter.toDay(dailyData.getTime()));
-            setOnClickListener(view -> listener.onItemClick(dailyData));
+        setOnClickListener(view -> listener.onItemClick(dailyData));
     }
 
     public interface DailyDataItemActionListener {

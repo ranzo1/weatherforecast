@@ -6,6 +6,13 @@
     <color name="colorBlack">#090909</color>
     <color name="colorGray">#535353</color>
     <color name="colorWhite">#fff</color>
-    <color name="lightTransparent">#A1FFFFFF</color>
+    <color name="colorWhiteLight">#000000</color>
+    <color name="lightTransparent">#2DFFFFFF</color>
+    <color name="almostTransparent">#16FFFFFF</color>
+    <color name="normalTransparent">#7BFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="dataColor">#AE050505</color>
+    <color name="iconColorLightBlue">#C0D5D8</color>
+    <color name="moonColorIcon">#FDE51E</color>
+    <color name="sunColorIcon">#BFE4752B</color>
 </resources>
