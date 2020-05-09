@@ -1,6 +1,7 @@
 package eu.execom.weatherforecast.ui;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -88,9 +89,9 @@ public class SingleDayForecastActivity extends AppCompatActivity {
         textViewUvIndex.setText(String.valueOf(dailyData.getUvIndex()));
         textViewHumidity.setText(String.valueOf(dailyData.getHumidity()));
         backgroundLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyData.getIcon()));
-        if(dailyData.getSunriseTime()!=null && dailyData.getSunsetTime()!= null){
-        textViewSunrise.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunriseTime())));
-        textViewSunset.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunsetTime())));
+        if (dailyData.getSunriseTime() != null && dailyData.getSunsetTime() != null) {
+            textViewSunrise.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunriseTime())));
+            textViewSunset.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunsetTime())));
         }
     }
 }

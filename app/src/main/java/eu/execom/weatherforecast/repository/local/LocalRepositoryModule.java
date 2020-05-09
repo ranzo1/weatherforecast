@@ -9,9 +9,11 @@ import dagger.Provides;
 import eu.execom.weatherforecast.repository.local.shared_preferences.FavoriteCitiesDaoImpl;
 import eu.execom.weatherforecast.repository.local.shared_preferences.LocalCoordinatesDaoImpl;
 import eu.execom.weatherforecast.repository.local.shared_preferences.LocalWeatherDaoImpl;
+import eu.execom.weatherforecast.repository.local.shared_preferences.SettingsDaoImpl;
 import eu.execom.weatherforecast.usecase.dependency.repository.FavoriteCitiesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalCoordinatesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
+import eu.execom.weatherforecast.usecase.dependency.repository.SettingsDao;
 
 @Module
 public class LocalRepositoryModule {
@@ -38,5 +40,11 @@ public class LocalRepositoryModule {
     @Singleton
     FavoriteCitiesDao provideFavoriteCitiesDao() {
         return new FavoriteCitiesDaoImpl(context);
+    }
+
+    @Provides
+    @Singleton
+    SettingsDao provideSettingsDao(){
+        return new SettingsDaoImpl(context);
     }
 }

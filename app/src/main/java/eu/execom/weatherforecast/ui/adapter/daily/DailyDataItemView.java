@@ -1,7 +1,6 @@
 package eu.execom.weatherforecast.ui.adapter.daily;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,6 +18,9 @@ import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
 
 @EViewGroup(R.layout.daily_weather_item_view)
 public class DailyDataItemView extends RelativeLayout {
+
+    private static final String FAHRENHEIT = "fahrenheit";
+    private static final String CELSIUS = "celsius";
 
     @Bean
     DateFormatter dateFormatter;
@@ -53,14 +55,27 @@ public class DailyDataItemView extends RelativeLayout {
         setClickable(true);
     }
 
-    public void bind(DailyData dailyData, DailyDataItemActionListener listener) {
-        String maxTemperatureCelsius = temperatureConverter.convertToCelsius(dailyData.getTemperatureMax()) + "°";
-        String minTemperatureCelsius = temperatureConverter.convertToCelsius(dailyData.getTemperatureMin()) + "°";
-        int maxTemperature = temperatureConverter.convertToCelsius(dailyData.getTemperatureMax());
+    public void bind(DailyData dailyData, DailyDataItemActionListener listener, String temperatureUnit) {
+        int maxTemperature = 0;
+        int minTemperature = 0;
+
+        if (temperatureUnit.equals(FAHRENHEIT)) {
+            maxTemperature = Math.round(dailyData.getTemperatureMax());
+            minTemperature = Math.round(dailyData.getTemperatureMin());
+            imageViewMaxTemperature.setImageResource(weatherDrawableProvider.getMaxTemperatureInFahrenheitImage(maxTemperature));
+        }
+        if (temperatureUnit.equals(CELSIUS)) {
+            maxTemperature = temperatureConverter.convertToCelsius(dailyData.getTemperatureMax());
+            minTemperature = temperatureConverter.convertToCelsius(dailyData.getTemperatureMin());
+            imageViewMaxTemperature.setImageResource(weatherDrawableProvider.getMaxTemperatureInCelsiusImage(maxTemperature));
+        }
+
+        String maxTemperatureConverted = maxTemperature + "°";
+        String minTemperatureConverted = minTemperature + "°";
+
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(dailyData.getIcon()));
-        imageViewMaxTemperature.setImageResource(weatherDrawableProvider.getMaxTemperatureImage(maxTemperature));
-        temperatureHighest.setText(maxTemperatureCelsius);
-        temperatureLowest.setText(minTemperatureCelsius);
+        temperatureHighest.setText(maxTemperatureConverted);
+        temperatureLowest.setText(minTemperatureConverted);
         textViewDay.setText(dateFormatter.toDay(dailyData.getTime()));
         setOnClickListener(view -> listener.onItemClick(dailyData));
     }

@@ -9,6 +9,7 @@ public class DailyWeather implements Serializable {
     private Currently currently;
     private Daily daily;
     private Hourly hourly;
+    private Minutely minutely;
     private LocationData locationData;
     private Date lastTimeSync;
 
@@ -58,5 +59,13 @@ public class DailyWeather implements Serializable {
 
     public void setHourly(Hourly hourly) {
         this.hourly = hourly;
+    }
+
+    public Minutely getMinutely() {
+        return minutely;
+    }
+
+    public void setMinutely(Minutely minutely) {
+        this.minutely = minutely;
     }
 }

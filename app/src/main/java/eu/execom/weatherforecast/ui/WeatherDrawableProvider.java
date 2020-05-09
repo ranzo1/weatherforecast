@@ -104,11 +104,21 @@ public class WeatherDrawableProvider {
         return R.drawable.ic_error;
     }
 
-    public int getTemperatureImage(int temperature) {
+    public int getTemperatureInCelsiusImage(int temperature) {
         if (temperature <= 0) {
             return R.drawable.ic_thermometer_low;
         }
         if (temperature >= 30) {
+            return R.drawable.ic_thermometer_high;
+        }
+        return R.drawable.ic_thermometer_medium;
+    }
+
+    public int getTemperatureInFahrenheitImage(int temperature) {
+        if (temperature <= 20) {
+            return R.drawable.ic_thermometer_low;
+        }
+        if (temperature >= 86) {
             return R.drawable.ic_thermometer_high;
         }
         return R.drawable.ic_thermometer_medium;
@@ -134,7 +144,7 @@ public class WeatherDrawableProvider {
         return R.drawable.ic_error;
     }
 
-    public int getMaxTemperatureImage(int temperature) {
+    public int getMaxTemperatureInCelsiusImage(int temperature) {
         if (temperature <= 0) {
             return R.drawable.ic_temp_1;
         }
@@ -145,6 +155,22 @@ public class WeatherDrawableProvider {
             return R.drawable.ic_temp_3;
         }
         if (temperature < 30) {
+            return R.drawable.ic_temp_4;
+        }
+        return R.drawable.ic_temp_5;
+    }
+
+    public int getMaxTemperatureInFahrenheitImage(int temperature) {
+        if (temperature <= 32) {
+            return R.drawable.ic_temp_1;
+        }
+        if (temperature <= 50) {
+            return R.drawable.ic_temp_2;
+        }
+        if (temperature <= 59) {
+            return R.drawable.ic_temp_3;
+        }
+        if (temperature < 86) {
             return R.drawable.ic_temp_4;
         }
         return R.drawable.ic_temp_5;

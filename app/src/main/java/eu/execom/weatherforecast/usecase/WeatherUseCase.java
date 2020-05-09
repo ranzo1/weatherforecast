@@ -11,6 +11,7 @@ import eu.execom.weatherforecast.usecase.dependency.repository.FavoriteCitiesDao
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalCoordinatesDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocalWeatherDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.LocationProvider;
+import eu.execom.weatherforecast.usecase.dependency.repository.SettingsDao;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -24,14 +25,24 @@ public class WeatherUseCase {
     private LocalWeatherDao localWeatherDao;
     private LocalCoordinatesDao localCoordinatesDao;
     private FavoriteCitiesDao favoriteCitiesDao;
+    private SettingsDao settingsDao;
 
 
-    public WeatherUseCase(WeatherRemoteDao weatherRemoteDao, LocationProvider locationProvider, LocalWeatherDao localWeatherDao, LocalCoordinatesDao localCoordinatesDao, FavoriteCitiesDao favoriteCitiesDao) {
+    public WeatherUseCase(WeatherRemoteDao weatherRemoteDao, LocationProvider locationProvider, LocalWeatherDao localWeatherDao, LocalCoordinatesDao localCoordinatesDao, FavoriteCitiesDao favoriteCitiesDao, SettingsDao settingsDao) {
         this.weatherRemoteDao = weatherRemoteDao;
         this.locationProvider = locationProvider;
         this.localWeatherDao = localWeatherDao;
         this.localCoordinatesDao = localCoordinatesDao;
         this.favoriteCitiesDao = favoriteCitiesDao;
+        this.settingsDao = settingsDao;
+    }
+
+    public void setTemperatureUnit(String unit) {
+        settingsDao.setTemperatureUnit(unit);
+    }
+
+    public String getTemperatureUnit() {
+        return settingsDao.getTemperatureUnit();
     }
 
     public Single<DailyWeather> getWeatherForecastForCurrentLocation() {

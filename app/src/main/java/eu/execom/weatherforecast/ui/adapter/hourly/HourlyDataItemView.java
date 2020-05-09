@@ -20,6 +20,9 @@ import eu.execom.weatherforecast.ui.WeatherPercentageFormatter;
 @EViewGroup(R.layout.hourly_weather_item_view)
 public class HourlyDataItemView extends RelativeLayout {
 
+    private static final String FAHRENHEIT = "fahrenheit";
+    private static final String CELSIUS = "celsius";
+
     @Bean
     DateFormatter dateFormatter;
 
@@ -59,16 +62,24 @@ public class HourlyDataItemView extends RelativeLayout {
         setClickable(true);
     }
 
-    public void bind(HourlyData hourlyData) {
-        String temperatureCelsius = temperatureConverter.convertToCelsius(hourlyData.getTemperature()) + "°";
-        int temperature = temperatureConverter.convertToCelsius(hourlyData.getTemperature());
+    public void bind(HourlyData hourlyData, String temperatureUnit) {
+        int temperature = 0;
+
+        if (temperatureUnit.equals(FAHRENHEIT)) {
+            temperature = Math.round(hourlyData.getTemperature());
+            temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureInFahrenheitImage(temperature));
+        }
+        if (temperatureUnit.equals(CELSIUS)) {
+            temperature = temperatureConverter.convertToCelsius(hourlyData.getTemperature());
+            temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureInCelsiusImage(temperature));
+        }
+        String temperatureConverted = temperature + "°";
         int precipProbability = percentageFormatter.getPercentage(hourlyData.getPrecipProbability());
         String precipProbabilityPercent = precipProbability + "%";
 
         imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(hourlyData.getIcon()));
         textViewHour.setText(dateFormatter.toHour(hourlyData.getTime()));
-        temperatureHourly.setText(temperatureCelsius);
-        temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureImage(temperature));
+        temperatureHourly.setText(temperatureConverted);
         precipProbabilityTextView.setText(precipProbabilityPercent);
         precipProbabilityImage.setImageResource(weatherDrawableProvider.getPrecipProbabilityImage(precipProbability));
     }

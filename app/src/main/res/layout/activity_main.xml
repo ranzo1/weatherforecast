@@ -8,17 +8,6 @@
     android:background="@drawable/clear_night_background"
     tools:context=".ui.MainActivity">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        app:lottie_fileName="partly_cloudy_animation.json"
-        app:lottie_loop="true" />
-
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/avi"
         android:layout_width="wrap_content"
@@ -32,6 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/almostTransparent">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            app:showText="true"/>
 
         <ImageView
             android:id="@+id/favoriteCities"
@@ -75,6 +73,18 @@
             android:textSize="40sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/degree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewWeather"
+           android:layout_toEndOf="@+id/textViewTemperature"
+            android:layout_marginTop="5dp"
+            android:text="@string/degree"
+            android:textColor="@color/dataColor"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
         <com.like.LikeButton
             android:id="@+id/addCityToFavoritesButton"
             android:layout_width="20dp"
@@ -82,10 +92,10 @@
             android:layout_below="@+id/textViewSyncTime"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
-            app:unlike_drawable="@drawable/star_disliked"
-            app:like_drawable="@drawable/star_liked"
             app:icon_size="20dp"
-            app:icon_type="star">
+            app:icon_type="star"
+            app:like_drawable="@drawable/star_liked"
+            app:unlike_drawable="@drawable/star_disliked">
 
         </com.like.LikeButton>
 
@@ -99,10 +109,109 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/minutely"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:text="@string/minutely"
+                    android:textColor="@color/colorWhiteLight"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewMinutely"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/minutely"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="6dp"
+                    android:padding="10dp"
+                    app:cardBackgroundColor="@color/lightTransparent"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="70dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/wind_animation_view"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:visibility="visible"
+                            app:lottie_fileName="wind_turbine.json"
+                            app:lottie_loop="true" />
+
+                        <TextView
+                            android:id="@+id/textViewWindSpeed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@+id/wind_animation_view"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="23dp"
+                            android:layout_toEndOf="@+id/textViewWindSpeed"
+                            android:text="@string/mph"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textViewWind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textViewWindSpeed"
+                            android:layout_toEndOf="@+id/wind_animation_view"
+                            android:textColor="@color/dataColor"
+                            android:textSize="17sp" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/rain_animation_view"
+                            android:layout_width="120dp"
+                            android:layout_height="70dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="5dp"
+                            android:layout_toStartOf="@+id/textViewPrecipProbability"
+                            android:visibility="gone"
+                            app:lottie_fileName="partly_cloudy_animation.json"
+                            app:lottie_loop="true" />
+
+                        <TextView
+                            android:id="@+id/textViewPrecipProbability"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30sp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="50dp" />
+
+                        <TextView
+                            android:id="@+id/minutelySummary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20sp"
+                            android:layout_below="@+id/wind_animation_view"
+                            android:textColor="@color/dataColor"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
                     android:id="@+id/hourly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
+                    android:layout_below="@+id/cardViewMinutely"
                     android:layout_marginStart="7dp"
                     android:text="@string/hourly"
                     android:textColor="@color/colorWhiteLight"
@@ -118,14 +227,14 @@
                     android:textColor="@color/colorWhiteLight"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewHourly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/hourly"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="6dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="6dp"
                     android:padding="10dp"
                     app:cardBackgroundColor="@color/lightTransparent"
@@ -134,14 +243,14 @@
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="70dp">
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerWeatherHourly"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewDaily"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -158,11 +267,11 @@
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="70dp">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerWeather"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerWeatherDaily"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/details"
@@ -174,7 +283,7 @@
                     android:textColor="@color/colorWhiteLight"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewAdditionalData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -257,7 +366,7 @@
 
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
             </RelativeLayout>
 
@@ -276,9 +385,9 @@
             android:id="@+id/imageViewWeather"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/toggleButton"
             android:layout_centerInParent="true"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="20dp" />
 
         <ImageView
             android:id="@+id/imageViewTemperature"
@@ -287,7 +396,7 @@
             android:layout_above="@id/textViewDescription"
             android:layout_centerInParent="true"
             android:layout_marginBottom="10dp"
-            android:layout_toEndOf="@id/textViewTemperature" />
+            android:layout_toEndOf="@id/degree" />
 
         <TextView
             android:id="@+id/textViewDescription"

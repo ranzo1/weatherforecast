@@ -2,8 +2,6 @@ package eu.execom.weatherforecast.repository.remote;
 
 import android.content.Context;
 
-import javax.inject.Inject;
-
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.repository.remote.dto.DailyWeatherDto;
 import io.reactivex.Single;

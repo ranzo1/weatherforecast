@@ -1,7 +1,7 @@
 package eu.execom.weatherforecast.ui.adapter.daily;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.ViewGroup;
 
 import org.androidannotations.annotations.EBean;
@@ -19,9 +19,11 @@ public class DailyDataAdapter extends RecyclerViewAdapterBase<DailyData, DailyDa
 
     private DailyDataItemView.DailyDataItemActionListener dailyDataItemActionListener;
 
+    private String temperatureUnit;
+
     @Override
     public void onBindViewHolder(@NonNull ViewWrapper<DailyDataItemView> holder, int position) {
-        holder.getView().bind(items.get(position), dailyDataItemActionListener);
+        holder.getView().bind(items.get(position), dailyDataItemActionListener, temperatureUnit);
     }
 
     @Override
@@ -31,5 +33,9 @@ public class DailyDataAdapter extends RecyclerViewAdapterBase<DailyData, DailyDa
 
     public void setDailyDataItemActionListener(DailyDataItemView.DailyDataItemActionListener dailyDataItemActionListener) {
         this.dailyDataItemActionListener = dailyDataItemActionListener;
+    }
+
+    public void setTemperatureUnit(String temperatureUnit) {
+        this.temperatureUnit = temperatureUnit;
     }
 }

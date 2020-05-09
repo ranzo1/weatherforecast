@@ -8,6 +8,7 @@ public class Currently {
     private String summary;
     private WeatherType icon;
     private float temperature;
+    private float windSpeed;
 
     public Date getTime() {
         return time;
@@ -39,5 +40,13 @@ public class Currently {
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(float windSpeed) {
+        this.windSpeed = windSpeed;
     }
 }
