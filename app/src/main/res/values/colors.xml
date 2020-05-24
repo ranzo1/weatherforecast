@@ -11,7 +11,7 @@
     <color name="almostTransparent">#16FFFFFF</color>
     <color name="normalTransparent">#7BFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="dataColor">#AE050505</color>
+    <color name="dataColor">#C5050505</color>
     <color name="iconColorLightBlue">#C0D5D8</color>
     <color name="moonColorIcon">#FDE51E</color>
     <color name="sunColorIcon">#BFE4752B</color>

@@ -1,12 +1,12 @@
 package eu.execom.weatherforecast.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +43,7 @@ import javax.inject.Inject;
 import eu.execom.weatherforecast.BuildConfig;
 import eu.execom.weatherforecast.MyApplication;
 import eu.execom.weatherforecast.R;
-import eu.execom.weatherforecast.TemperatureConverter;
+import eu.execom.weatherforecast.UnitsConverter;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
 import eu.execom.weatherforecast.ui.adapter.daily.DailyDataAdapter;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     WeatherDrawableProvider weatherDrawableProvider;
 
     @Bean
-    TemperatureConverter temperatureConverter;
+    UnitsConverter unitsConverter;
 
     @Bean
     DateFormatter dateFormatter;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     TextView humidity;
 
     @ViewById
-    TextView minutelySummary;
+    TextView overviewSummary;
 
     @ViewById
     TextView textViewWind;
@@ -129,7 +129,10 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     TextView textViewWindSpeed;
 
     @ViewById
-    TextView textViewPrecipProbability;
+    TextView textViewWindDescription;
+
+    @ViewById
+    TextView textViewMph;
 
     @ViewById
     RecyclerView recyclerWeatherDaily;
@@ -174,14 +177,12 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     CardView cardViewMinutely;
 
     @ViewById
-    LottieAnimationView wind_animation_view;
-
-    @ViewById
-    LottieAnimationView rain_animation_view;
+    LottieAnimationView windAnimationView;
 
     @ViewById
     SwitchCompat toggleButton;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         container.setVisibility(View.INVISIBLE);
@@ -202,8 +203,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         compositeDisposable = new CompositeDisposable();
         checkPermissions();
 
-        wind_animation_view.playAnimation();
-        rain_animation_view.playAnimation();
+        windAnimationView.playAnimation();
 
         toggleButton.setTextOn(getString(R.string.fahrenheitUnit));
         toggleButton.setTextOff(getString(R.string.celsiusUnit));
@@ -213,19 +213,23 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
             float temperature = Float.parseFloat(textViewTemperature.getText().toString());
             if (isChecked) {
                 weatherUseCase.setTemperatureUnit(FAHRENHEIT);
-                textViewTemperature.setText(String.valueOf(temperatureConverter.convertToFahrenheit(temperature)));
+                textViewTemperature.setText(String.valueOf(unitsConverter.convertToFahrenheit(temperature)));
                 hourlyDataAdapter.setTemperatureUnit(FAHRENHEIT);
                 hourlyDataAdapter.notifyDataSetChanged();
                 dailyDataAdapter.setTemperatureUnit(FAHRENHEIT);
                 dailyDataAdapter.notifyDataSetChanged();
+                textViewWindSpeed.setText(String.valueOf(unitsConverter.convertToMph(Float.parseFloat(textViewWindSpeed.getText().toString()))));
+                textViewMph.setText(R.string.mph);
 
             } else {
                 weatherUseCase.setTemperatureUnit(CELSIUS);
-                textViewTemperature.setText(String.valueOf(temperatureConverter.convertToCelsius(temperature)));
+                textViewTemperature.setText(String.valueOf(unitsConverter.convertToCelsius(temperature)));
                 hourlyDataAdapter.setTemperatureUnit(CELSIUS);
                 hourlyDataAdapter.notifyDataSetChanged();
                 dailyDataAdapter.setTemperatureUnit(CELSIUS);
                 dailyDataAdapter.notifyDataSetChanged();
+                textViewWindSpeed.setText(String.valueOf(unitsConverter.convertToKmh(Float.parseFloat(textViewWindSpeed.getText().toString()))));
+                textViewMph.setText(R.string.kmh);
             }
         });
     }
@@ -280,12 +284,14 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
             toggleButton.setChecked(true);
             dailyDataAdapter.setTemperatureUnit(FAHRENHEIT);
             hourlyDataAdapter.setTemperatureUnit(FAHRENHEIT);
+            textViewMph.setText(R.string.mph);
             return;
         }
         if (weatherUseCase.getTemperatureUnit().equals(CELSIUS)) {
             toggleButton.setChecked(false);
             dailyDataAdapter.setTemperatureUnit(CELSIUS);
             hourlyDataAdapter.setTemperatureUnit(CELSIUS);
+            textViewMph.setText(R.string.kmh);
         }
     }
 
@@ -337,8 +343,13 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         textViewSyncTime.setText(String.valueOf(dateFormatter.toDateAndTime(dailyWeathers.getLastTimeSync())));
         chooseCity.setText(dailyWeathers.getLocationData().getCityName());
         uvIndex.setText(String.valueOf((dailyDataList.get(0).getUvIndex())));
-        textViewWindSpeed.setText(String.valueOf(dailyWeathers.getCurrently().getWindSpeed()));
+        if (toggleButton.isChecked()) {
+            textViewWindSpeed.setText(String.valueOf(Math.round(dailyWeathers.getCurrently().getWindSpeed())));
+        } else {
+            textViewWindSpeed.setText(String.valueOf(unitsConverter.convertToKmh(dailyWeathers.getCurrently().getWindSpeed())));
+        }
         textViewWind.setText(descriptionWeatherProvider.getWindType(dailyWeathers.getCurrently().getWindSpeed()));
+        textViewWindDescription.setText(descriptionWeatherProvider.getWindDescription(textViewWind.getText().toString()));
         if (dailyDataList.get(0).getSunriseTime() != null && dailyDataList.get(0).getSunsetTime() != null) {
             sunrise.setText(dateFormatter.toHour(dailyDataList.get(0).getSunriseTime()));
             sunset.setText(dateFormatter.toHour(dailyDataList.get(0).getSunsetTime()));
@@ -353,15 +364,12 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         } else {
             addCityToFavoritesButton.setLiked(false);
         }
-        imageViewTemperature.setImageResource(weatherDrawableProvider.getTemperatureInCelsiusImage(temperatureConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
+        imageViewTemperature.setImageResource(weatherDrawableProvider.getTemperatureInCelsiusImage(unitsConverter.convertToCelsius(dailyWeathers.getCurrently().getTemperature())));
         dailyDataAdapter.setItems(dailyDataList);
         hourlyDataAdapter.setItems(dailyWeathers.getHourly().getData());
         backgroundWeatherLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyWeathers.getCurrently().getIcon()));
-        if (dailyWeathers.getMinutely() != null) {
-            minutelySummary.setText(dailyWeathers.getMinutely().getSummary());
-        } else {
-            minutelySummary.setText(R.string.no_data_to_show);
-        }
+
+        overviewSummary.setText(dailyDataList.get(0).getSummary());
         animate();
         avi.hide();
         container.setVisibility(View.VISIBLE);
@@ -369,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
     private void setTemperatureUnitToViews(DailyWeather dailyWeather) {
         int temperatureFahrenheit = Math.round(dailyWeather.getCurrently().getTemperature());
-        int temperatureCelsius = temperatureConverter.convertToCelsius(dailyWeather.getCurrently().getTemperature());
+        int temperatureCelsius = unitsConverter.convertToCelsius(dailyWeather.getCurrently().getTemperature());
         if (weatherUseCase.getTemperatureUnit().equals(CELSIUS)) {
             textViewTemperature.setText(String.valueOf(temperatureCelsius));
             return;

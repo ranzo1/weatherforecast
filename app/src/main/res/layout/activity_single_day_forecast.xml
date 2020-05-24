@@ -8,13 +8,161 @@
     tools:context=".ui.SingleDayForecastActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewWind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="6dp"
+        android:padding="10dp"
+        android:layout_above="@+id/cardViewTemperature"
+        app:cardBackgroundColor="@color/lightTransparent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="70dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/windAnimationView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                app:lottie_fileName="wind_turbine.json"
+                app:lottie_loop="true" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="160dp"
+                android:layout_margin="5dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_wind_speed_illustration"
+                />
+
+            <TextView
+                android:id="@+id/textViewWindSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@+id/windAnimationView"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textViewMph"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@+id/textViewWindSpeed"
+                android:text="@string/mph"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textViewWind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewWindSpeed"
+                android:layout_toEndOf="@+id/windAnimationView"
+                android:textColor="@color/dataColor"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/textViewWindDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewWind"
+                android:layout_toEndOf="@+id/windAnimationView"
+                android:textColor="@color/dataColor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/minutelySummary"
+                android:layout_width="wrap_content"
+                android:layout_height="20sp"
+                android:layout_below="@+id/windAnimationView"
+                android:textColor="@color/dataColor"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewWeather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="6dp"
+        android:padding="10dp"
+        android:layout_above="@+id/cardViewWind"
+        app:cardBackgroundColor="@color/lightTransparent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="70dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewSummary"
+                android:layout_margin="2dp"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="2dp"
+                android:text="@string/date"
+                android:textColor="@color/colorBlack" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/weatherAnimationView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:lottie_fileName="rain_animation.json"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:id="@+id/textViewSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:layout_below="@+id/weatherAnimationView"
+                android:drawableStart="@drawable/ic_summary"
+                android:drawablePadding="2dp"
+                android:text="@string/summary"
+                android:textColor="@color/colorBlack" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardViewTemperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/cardViewSunSetRise"
+        android:layout_above="@+id/cardViewAdditional"
         android:layout_centerHorizontal="true"
+        app:cardCornerRadius="20dp"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/transparent"
+        app:cardBackgroundColor="@color/lightTransparent"
         app:cardElevation="0dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="70dp">
@@ -48,9 +196,9 @@
                 android:id="@+id/textViewTempMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textViewTimeTempMax"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
-                android:layout_alignStart="@+id/textViewTimeTempMax"
                 android:drawableStart="@drawable/ic_thermometer"
                 android:text="@string/tempmax"
                 android:textColor="@color/colorBlack" />
@@ -71,125 +219,87 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewSummary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/cardViewTemperature"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="0dp">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/textViewSummary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:drawableStart="@drawable/ic_summary"
-                android:drawablePadding="2dp"
-                android:text="@string/summary"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
-                android:id="@+id/textViewDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewSummary"
-                android:layout_margin="2dp"
-                android:drawableStart="@drawable/ic_calendar"
-                android:drawablePadding="2dp"
-                android:text="@string/date"
-                android:textColor="@color/colorBlack" />
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewAdditionalData"
+        android:id="@+id/cardViewAdditional"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="50dp"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="0dp">
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
+        android:padding="10dp"
+        app:cardBackgroundColor="@color/almostTransparent"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="70dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="10dp">
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ic_uv" />
 
             <TextView
                 android:id="@+id/textViewUvIndex"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_uv"
-                android:drawablePadding="2dp"
-                android:text="@string/uvindex"
-                android:textColor="@color/colorBlack" />
+                android:layout_height="20sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/dataColor"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textViewHumidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewUvIndex"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_humidity"
-                android:drawablePadding="2dp"
-                android:text="@string/humidity"
-                android:textColor="@color/colorBlack" />
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewSunSetRise"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/cardViewAdditionalData"
-        android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="0dp">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="10dp">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ic_sunrise" />
 
             <TextView
                 android:id="@+id/textViewSunrise"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_sun_rise"
-                android:drawablePadding="2dp"
-                android:text="@string/sunrise"
-                android:textColor="@color/colorBlack" />
+                android:layout_height="20sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/dataColor"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ic_sunset" />
 
             <TextView
                 android:id="@+id/textViewSunset"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewSunrise"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_sun_set"
-                android:drawablePadding="2dp"
-                android:text="@string/sunset"
-                android:textColor="@color/colorBlack" />
+                android:layout_height="20sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/dataColor"
+                android:textStyle="bold" />
 
-        </RelativeLayout>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ic_humidity" />
+
+            <TextView
+                android:id="@+id/textViewHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="20sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/dataColor"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

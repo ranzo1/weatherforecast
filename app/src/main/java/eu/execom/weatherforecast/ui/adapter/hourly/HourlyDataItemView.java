@@ -11,7 +11,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import eu.execom.weatherforecast.R;
-import eu.execom.weatherforecast.TemperatureConverter;
+import eu.execom.weatherforecast.UnitsConverter;
 import eu.execom.weatherforecast.domain.HourlyData;
 import eu.execom.weatherforecast.ui.DateFormatter;
 import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
@@ -30,7 +30,7 @@ public class HourlyDataItemView extends RelativeLayout {
     WeatherDrawableProvider weatherDrawableProvider;
 
     @Bean
-    TemperatureConverter temperatureConverter;
+    UnitsConverter temperatureConverter;
 
     @Bean
     WeatherPercentageFormatter percentageFormatter;

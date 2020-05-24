@@ -33,7 +33,6 @@
     <string name="no_data">No data</string>
     <string name="minutely">Minutely</string>
     <string name="no_data_to_show">No currently data to show.</string>
-    <string name="mph">mph</string>
     <string name="degree">°</string>
     <string name="permission_denied">Permission denied :(</string>
     <string name="error_message">Can\'t find that place. Try again.</string>
@@ -52,4 +51,7 @@
     <string name="storm">Storm</string>
     <string name="violent_storm">Violent Storm</string>
     <string name="hurricane">Hurricane</string>
+    <string name="overview">Overview</string>
+    <string name="mph">mph</string>
+    <string name="kmh">kmh</string>
 </resources>

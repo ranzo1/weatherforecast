@@ -29,7 +29,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            app:showText="true"/>
+            app:showText="true" />
 
         <ImageView
             android:id="@+id/favoriteCities"
@@ -78,8 +78,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageViewWeather"
-           android:layout_toEndOf="@+id/textViewTemperature"
             android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/textViewTemperature"
             android:text="@string/degree"
             android:textColor="@color/dataColor"
             android:textSize="40sp"
@@ -109,11 +109,11 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/minutely"
+                    android:id="@+id/overview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
-                    android:text="@string/minutely"
+                    android:text="@string/overview"
                     android:textColor="@color/colorWhiteLight"
                     android:textStyle="bold" />
 
@@ -121,7 +121,7 @@
                     android:id="@+id/cardViewMinutely"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/minutely"
+                    android:layout_below="@+id/overview"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
@@ -139,7 +139,7 @@
                         android:padding="5dp">
 
                         <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/wind_animation_view"
+                            android:id="@+id/windAnimationView"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_alignParentStart="true"
@@ -153,17 +153,20 @@
                             android:id="@+id/textViewWindSpeed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_toEndOf="@+id/wind_animation_view"
+                            android:layout_marginTop="10dp"
+                            android:layout_toEndOf="@+id/windAnimationView"
+                            android:textColor="@color/dataColor"
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/textViewMph"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:layout_marginTop="23dp"
+                            android:layout_marginTop="10dp"
                             android:layout_toEndOf="@+id/textViewWindSpeed"
                             android:text="@string/mph"
+                            android:textColor="@color/dataColor"
                             android:textSize="12sp" />
 
                         <TextView
@@ -171,34 +174,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/textViewWindSpeed"
-                            android:layout_toEndOf="@+id/wind_animation_view"
+                            android:layout_toEndOf="@+id/windAnimationView"
                             android:textColor="@color/dataColor"
                             android:textSize="17sp" />
 
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/rain_animation_view"
-                            android:layout_width="120dp"
-                            android:layout_height="70dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_toStartOf="@+id/textViewPrecipProbability"
-                            android:visibility="gone"
-                            app:lottie_fileName="partly_cloudy_animation.json"
-                            app:lottie_loop="true" />
-
                         <TextView
-                            android:id="@+id/textViewPrecipProbability"
+                            android:id="@+id/textViewWindDescription"
                             android:layout_width="wrap_content"
-                            android:layout_height="30sp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="50dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textViewWind"
+                            android:layout_toEndOf="@+id/windAnimationView"
+                            android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/minutelySummary"
+                            android:id="@+id/overviewSummary"
                             android:layout_width="wrap_content"
                             android:layout_height="20sp"
-                            android:layout_below="@+id/wind_animation_view"
+                            android:layout_below="@+id/windAnimationView"
                             android:textColor="@color/dataColor"
                             android:textStyle="bold" />
 

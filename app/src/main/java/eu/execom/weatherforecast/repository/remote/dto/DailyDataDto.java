@@ -13,6 +13,13 @@ public class DailyDataDto {
     private int uvIndex;
     private Long sunriseTime;
     private Long sunsetTime;
+    private float dewPoint;
+    private float pressure;
+    private float windSpeed;
+    private float windGust;
+    private Long windGustTime;
+    private float cloudCover;
+    private float visibility;
 
     public Long getTemperatureMinTime() {
         return temperatureMinTime;
@@ -100,5 +107,61 @@ public class DailyDataDto {
 
     public void setSunsetTime(Long sunsetTime) {
         this.sunsetTime = sunsetTime;
+    }
+
+    public float getDewPoint() {
+        return dewPoint;
+    }
+
+    public void setDewPoint(float dewPoint) {
+        this.dewPoint = dewPoint;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(float pressure) {
+        this.pressure = pressure;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(float windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public float getWindGust() {
+        return windGust;
+    }
+
+    public void setWindGust(float windGust) {
+        this.windGust = windGust;
+    }
+
+    public Long getWindGustTime() {
+        return windGustTime;
+    }
+
+    public void setWindGustTime(Long windGustTime) {
+        this.windGustTime = windGustTime;
+    }
+
+    public float getCloudCover() {
+        return cloudCover;
+    }
+
+    public void setCloudCover(float cloudCover) {
+        this.cloudCover = cloudCover;
+    }
+
+    public float getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(float visibility) {
+        this.visibility = visibility;
     }
 }

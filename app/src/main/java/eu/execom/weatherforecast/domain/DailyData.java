@@ -16,6 +16,13 @@ public class DailyData implements Serializable {
     private Date time;
     private Date sunriseTime;
     private Date sunsetTime;
+    private float dewPoint;
+    private float pressure;
+    private float windSpeed;
+    private float windGust;
+    private Date windGustTime;
+    private float cloudCover;
+    private int visibility;
 
     public Date getSunriseTime() {
         return sunriseTime;
@@ -103,5 +110,61 @@ public class DailyData implements Serializable {
 
     public void setUvIndex(int uvIndex) {
         this.uvIndex = uvIndex;
+    }
+
+    public float getDewPoint() {
+        return dewPoint;
+    }
+
+    public void setDewPoint(float dewPoint) {
+        this.dewPoint = dewPoint;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(float pressure) {
+        this.pressure = pressure;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(float windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public float getWindGust() {
+        return windGust;
+    }
+
+    public void setWindGust(float windGust) {
+        this.windGust = windGust;
+    }
+
+    public Date getWindGustTime() {
+        return windGustTime;
+    }
+
+    public void setWindGustTime(Date windGustTime) {
+        this.windGustTime = windGustTime;
+    }
+
+    public float getCloudCover() {
+        return cloudCover;
+    }
+
+    public void setCloudCover(float cloudCover) {
+        this.cloudCover = cloudCover;
+    }
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
     }
 }
