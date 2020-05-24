@@ -6,6 +6,7 @@ public class CurrentlyDto {
     private String summary;
     private String icon;
     private float temperature;
+    private float windSpeed;
 
     public long getTime() {
         return time;
@@ -37,5 +38,13 @@ public class CurrentlyDto {
 
     public void setTemperature(float temperature) {
         this.temperature = temperature;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(float windSpeed) {
+        this.windSpeed = windSpeed;
     }
 }

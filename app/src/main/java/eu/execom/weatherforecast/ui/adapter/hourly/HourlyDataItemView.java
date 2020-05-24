@@ -11,13 +11,17 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import eu.execom.weatherforecast.R;
-import eu.execom.weatherforecast.TemperatureConverter;
+import eu.execom.weatherforecast.UnitsConverter;
 import eu.execom.weatherforecast.domain.HourlyData;
 import eu.execom.weatherforecast.ui.DateFormatter;
 import eu.execom.weatherforecast.ui.WeatherDrawableProvider;
+import eu.execom.weatherforecast.ui.WeatherPercentageFormatter;
 
 @EViewGroup(R.layout.hourly_weather_item_view)
 public class HourlyDataItemView extends RelativeLayout {
+
+    private static final String FAHRENHEIT = "fahrenheit";
+    private static final String CELSIUS = "celsius";
 
     @Bean
     DateFormatter dateFormatter;
@@ -26,7 +30,10 @@ public class HourlyDataItemView extends RelativeLayout {
     WeatherDrawableProvider weatherDrawableProvider;
 
     @Bean
-    TemperatureConverter temperatureConverter;
+    UnitsConverter temperatureConverter;
+
+    @Bean
+    WeatherPercentageFormatter percentageFormatter;
 
     @ViewById
     TextView textViewHour;
@@ -40,6 +47,12 @@ public class HourlyDataItemView extends RelativeLayout {
     @ViewById
     ImageView temperatureHourlyIcon;
 
+    @ViewById
+    TextView precipProbabilityTextView;
+
+    @ViewById
+    ImageView precipProbabilityImage;
+
     public HourlyDataItemView(Context context) {
         super(context);
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -49,10 +62,25 @@ public class HourlyDataItemView extends RelativeLayout {
         setClickable(true);
     }
 
-    public void bind(HourlyData hourlyData) {
-        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIconsMonoColor(hourlyData.getIcon()));
+    public void bind(HourlyData hourlyData, String temperatureUnit) {
+        int temperature = 0;
+
+        if (temperatureUnit.equals(FAHRENHEIT)) {
+            temperature = Math.round(hourlyData.getTemperature());
+            temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureInFahrenheitImage(temperature));
+        }
+        if (temperatureUnit.equals(CELSIUS)) {
+            temperature = temperatureConverter.convertToCelsius(hourlyData.getTemperature());
+            temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureInCelsiusImage(temperature));
+        }
+        String temperatureConverted = temperature + "°";
+        int precipProbability = percentageFormatter.getPercentage(hourlyData.getPrecipProbability());
+        String precipProbabilityPercent = precipProbability + "%";
+
+        imageViewWeather.setImageResource(weatherDrawableProvider.getWeatherIcons(hourlyData.getIcon()));
         textViewHour.setText(dateFormatter.toHour(hourlyData.getTime()));
-        temperatureHourly.setText(String.valueOf(temperatureConverter.convertToCelsius(hourlyData.getTemperature())));
-        temperatureHourlyIcon.setImageResource(weatherDrawableProvider.getTemperatureImage(temperatureConverter.convertToCelsius(hourlyData.getTemperature())));
+        temperatureHourly.setText(temperatureConverted);
+        precipProbabilityTextView.setText(precipProbabilityPercent);
+        precipProbabilityImage.setImageResource(weatherDrawableProvider.getPrecipProbabilityImage(precipProbability));
     }
 }

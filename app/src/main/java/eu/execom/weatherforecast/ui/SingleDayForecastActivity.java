@@ -1,9 +1,12 @@
 package eu.execom.weatherforecast.ui;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -11,7 +14,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import eu.execom.weatherforecast.TemperatureConverter;
+import eu.execom.weatherforecast.UnitsConverter;
 import eu.execom.weatherforecast.R;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.LocationData;
@@ -29,7 +32,10 @@ public class SingleDayForecastActivity extends AppCompatActivity {
     WeatherDrawableProvider weatherDrawableProvider;
 
     @Bean
-    TemperatureConverter temperatureConverter;
+    DescriptionWeatherProvider descriptionWeatherProvider;
+
+    @Bean
+    UnitsConverter temperatureConverter;
 
     @Bean
     DateFormatter dataFormatter;
@@ -41,13 +47,22 @@ public class SingleDayForecastActivity extends AppCompatActivity {
     TextView textViewDate;
 
     @ViewById
+    TextView textViewWindSpeed;
+
+    @ViewById
     TextView textViewTempMin;
 
     @ViewById
     TextView textViewTimeTempMin;
 
     @ViewById
+    TextView textViewWind;
+
+    @ViewById
     TextView textViewTempMax;
+
+    @ViewById
+    TextView textViewWindDescription;
 
     @ViewById
     TextView textViewTimeTempMax;
@@ -64,9 +79,14 @@ public class SingleDayForecastActivity extends AppCompatActivity {
     @ViewById
     TextView textViewSunset;
 
-
     @ViewById
     RelativeLayout backgroundLayout;
+
+    @ViewById
+    LottieAnimationView windAnimationView;
+
+    @ViewById
+    LottieAnimationView weatherAnimationView;
 
     @AfterViews
     void init() {
@@ -76,6 +96,10 @@ public class SingleDayForecastActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
+
+        descriptionWeatherProvider.setContext(this);
+        windAnimationView.playAnimation();
+        weatherAnimationView.playAnimation();
     }
 
     private void showData() {
@@ -87,10 +111,11 @@ public class SingleDayForecastActivity extends AppCompatActivity {
         textViewDate.setText(String.valueOf(dataFormatter.toDate(dailyData.getTime())));
         textViewUvIndex.setText(String.valueOf(dailyData.getUvIndex()));
         textViewHumidity.setText(String.valueOf(dailyData.getHumidity()));
+        textViewWindSpeed.setText(String.valueOf(dailyData.getWindSpeed()));
         backgroundLayout.setBackgroundResource(weatherDrawableProvider.getWeatherBackground(dailyData.getIcon()));
-        if(dailyData.getSunriseTime()!=null && dailyData.getSunsetTime()!= null){
-        textViewSunrise.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunriseTime())));
-        textViewSunset.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunsetTime())));
+        if (dailyData.getSunriseTime() != null && dailyData.getSunsetTime() != null) {
+            textViewSunrise.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunriseTime())));
+            textViewSunset.setText(String.valueOf(dataFormatter.toHour(dailyData.getSunsetTime())));
         }
     }
 }

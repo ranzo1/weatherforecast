@@ -8,12 +8,16 @@ import eu.execom.weatherforecast.domain.Currently;
 import eu.execom.weatherforecast.domain.Daily;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
+import eu.execom.weatherforecast.domain.Hourly;
 import eu.execom.weatherforecast.domain.HourlyData;
+import eu.execom.weatherforecast.domain.Minutely;
 import eu.execom.weatherforecast.domain.WeatherType;
 import eu.execom.weatherforecast.repository.remote.dto.CurrentlyDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDataDto;
 import eu.execom.weatherforecast.repository.remote.dto.DailyDto;
 import eu.execom.weatherforecast.repository.remote.dto.HourlyDataDto;
+import eu.execom.weatherforecast.repository.remote.dto.HourlyDto;
+import eu.execom.weatherforecast.repository.remote.dto.MinutelyDto;
 import eu.execom.weatherforecast.usecase.dependency.repository.WeatherRemoteDao;
 import io.reactivex.Single;
 
@@ -35,7 +39,11 @@ public class WeatherRemoteDaoImpl implements WeatherRemoteDao {
 
         modelMapper.createTypeMap(DailyDataDto.class, DailyData.class);
 
+        modelMapper.createTypeMap(HourlyDto.class, Hourly.class);
+
         modelMapper.createTypeMap(HourlyDataDto.class, HourlyData.class);
+
+        modelMapper.createTypeMap(MinutelyDto.class, Minutely.class);
 
         modelMapper.createTypeMap(Long.class, Date.class)
                 .setConverter(input -> new Date(input.getSource() * 1000));

@@ -7,6 +7,15 @@ public class HourlyDataDto {
     private Long time;
     private float temperature;
     private float apparentTemperature;
+    private float precipProbability;
+
+    public float getPrecipProbability() {
+        return precipProbability;
+    }
+
+    public void setPrecipProbability(float precipProbability) {
+        this.precipProbability = precipProbability;
+    }
 
     public String getSummary() {
         return summary;
