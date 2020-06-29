@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
         descriptionWeatherProvider.setContext(this);
         avi.show();
+        setWeatherUnitWhenItsEmpty();
         recyclerWeatherDaily.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerWeatherDaily.setAdapter(dailyDataAdapter);
         dailyDataAdapter.setDailyDataItemActionListener(this);
@@ -276,6 +277,12 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
             addCityToFavoritesButton.setLiked(false);
             removeCityFromFavourites(chooseCity.getText().toString());
             Toast.makeText(myApplication, R.string.removeCityFromFavourites, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setWeatherUnitWhenItsEmpty() {
+        if (weatherUseCase.getTemperatureUnit().isEmpty()) {
+            weatherUseCase.setTemperatureUnit(CELSIUS);
         }
     }
 
