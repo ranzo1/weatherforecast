@@ -96,7 +96,6 @@ public class SingleDayForecastActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
-
         descriptionWeatherProvider.setContext(this);
         windAnimationView.playAnimation();
         weatherAnimationView.playAnimation();
