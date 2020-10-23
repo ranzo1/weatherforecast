@@ -9,12 +9,22 @@
     tools:context=".ui.MainActivity">
 
     <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
+        android:id="@+id/loadingView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         app:indicatorColor="@color/dataColor"
         app:indicatorName="BallPulseIndicator" />
+
+    <TextView
+        android:id="@+id/turnOnLocationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loadingView"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="@string/ensure_that_location_is_turned_on"
+        android:textColor="@color/dataColor" />
 
     <RelativeLayout
         android:id="@+id/container"

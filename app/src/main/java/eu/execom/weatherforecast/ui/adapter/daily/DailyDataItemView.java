@@ -55,7 +55,7 @@ public class DailyDataItemView extends RelativeLayout {
         setClickable(true);
     }
 
-    public void bind(DailyData dailyData, DailyDataItemActionListener listener, String temperatureUnit) {
+    public void bind(DailyData dailyData, String temperatureUnit) {
         int maxTemperature = 0;
         int minTemperature = 0;
 
@@ -77,10 +77,5 @@ public class DailyDataItemView extends RelativeLayout {
         temperatureHighest.setText(maxTemperatureConverted);
         temperatureLowest.setText(minTemperatureConverted);
         textViewDay.setText(dateFormatter.toDay(dailyData.getTime()));
-        setOnClickListener(view -> listener.onItemClick(dailyData));
-    }
-
-    public interface DailyDataItemActionListener {
-        void onItemClick(DailyData dailyData);
     }
 }

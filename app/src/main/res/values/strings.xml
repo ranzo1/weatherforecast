@@ -54,4 +54,5 @@
     <string name="overview">Overview</string>
     <string name="mph">mph</string>
     <string name="kmh">kmh</string>
+    <string name="ensure_that_location_is_turned_on">Ensure that location is turned on.</string>
 </resources>

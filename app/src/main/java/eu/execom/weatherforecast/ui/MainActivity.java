@@ -47,14 +47,13 @@ import eu.execom.weatherforecast.UnitsConverter;
 import eu.execom.weatherforecast.domain.DailyData;
 import eu.execom.weatherforecast.domain.DailyWeather;
 import eu.execom.weatherforecast.ui.adapter.daily.DailyDataAdapter;
-import eu.execom.weatherforecast.ui.adapter.daily.DailyDataItemView;
 import eu.execom.weatherforecast.ui.adapter.hourly.HourlyDataAdapter;
 import eu.execom.weatherforecast.usecase.WeatherUseCase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity implements DailyDataItemView.DailyDataItemActionListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private CompositeDisposable compositeDisposable;
@@ -88,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
     @Bean
     DescriptionWeatherProvider descriptionWeatherProvider;
+
+    @ViewById
+    TextView turnOnLocationText;
 
     @ViewById
     TextView textViewTemperature;
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
     ImageView currentLocation;
 
     @ViewById
-    AVLoadingIndicatorView avi;
+    AVLoadingIndicatorView loadingView;
 
     @ViewById
     RelativeLayout container;
@@ -194,11 +196,10 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         );
 
         descriptionWeatherProvider.setContext(this);
-        avi.show();
+        loadingView.show();
         setWeatherUnitWhenItsEmpty();
         recyclerWeatherDaily.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerWeatherDaily.setAdapter(dailyDataAdapter);
-        dailyDataAdapter.setDailyDataItemActionListener(this);
         recyclerWeatherHourly.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerWeatherHourly.setAdapter(hourlyDataAdapter);
         compositeDisposable = new CompositeDisposable();
@@ -259,8 +260,8 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
     @Click
     void currentLocation() {
-        avi.setVisibility(View.VISIBLE);
-        avi.show();
+        loadingView.setVisibility(View.VISIBLE);
+        loadingView.show();
         container.setVisibility(View.INVISIBLE);
         fetchWeeklyWeatherForecastForCurrentLocation();
     }
@@ -378,7 +379,8 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
 
         overviewSummary.setText(dailyDataList.get(0).getSummary());
         animate();
-        avi.hide();
+        loadingView.hide();
+        turnOnLocationText.setVisibility(View.INVISIBLE);
         container.setVisibility(View.VISIBLE);
     }
 
@@ -433,11 +435,6 @@ public class MainActivity extends AppCompatActivity implements DailyDataItemView
         compositeDisposable.add(weatherUseCase.getWeatherForecast(cityName)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showWeatherData, this::handleError));
-    }
-
-    @Override
-    public void onItemClick(DailyData dailyData) {
-        SingleDayForecastActivity_.intent(this).dailyData(dailyData).start();
     }
 
     private void onFavoriteCitySelected(int position, String city) {

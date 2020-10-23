@@ -17,22 +17,16 @@ public class DailyDataAdapter extends RecyclerViewAdapterBase<DailyData, DailyDa
     @RootContext
     Context context;
 
-    private DailyDataItemView.DailyDataItemActionListener dailyDataItemActionListener;
-
     private String temperatureUnit;
 
     @Override
     public void onBindViewHolder(@NonNull ViewWrapper<DailyDataItemView> holder, int position) {
-        holder.getView().bind(items.get(position), dailyDataItemActionListener, temperatureUnit);
+        holder.getView().bind(items.get(position), temperatureUnit);
     }
 
     @Override
     protected DailyDataItemView onCreateItemView(ViewGroup parent, int viewType) {
         return DailyDataItemView_.build(context);
-    }
-
-    public void setDailyDataItemActionListener(DailyDataItemView.DailyDataItemActionListener dailyDataItemActionListener) {
-        this.dailyDataItemActionListener = dailyDataItemActionListener;
     }
 
     public void setTemperatureUnit(String temperatureUnit) {

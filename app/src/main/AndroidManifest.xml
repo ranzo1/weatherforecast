@@ -13,6 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.SingleDayForecastActivity_"
@@ -22,6 +24,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
